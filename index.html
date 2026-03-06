@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Стратегия роста: Система мотивации</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0f172a; 
+            color: #f8fafc; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        .slide { 
+            min-height: 100vh; 
+            display: none; 
+            padding: 1rem;
+            overflow-y: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .slide.active { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start;
+            position: relative;
+        }
+        .gradient-text { 
+            background: linear-gradient(135deg, #60a5fa, #34d399); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+        }
+        .card { 
+            background: rgba(30, 41, 59, 0.9); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(148, 163, 184, 0.1); 
+            border-radius: 1rem;
+            width: 100%;
+        }
+        .nav-btn { 
+            transition: all 0.3s; 
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(51, 65, 85, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .nav-btn:hover { 
+            transform: scale(1.1); 
+            background: rgba(71, 85, 105, 0.9);
+        }
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+        .highlight { 
+            background: linear-gradient(120deg, rgba(96, 165, 250, 0.2) 0%, rgba(52, 211, 153, 0.2) 100%); 
+            border-left: 4px solid #60a5fa; 
+        }
+        .metric { 
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+        }
+        .progress-bar { 
+            background: linear-gradient(90deg, #3b82f6, #10b981); 
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-in { 
+            animation: fadeIn 0.6s ease-out; 
+        }
+        .content-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem 0.5rem 5rem 0.5rem;
+        }
+        h1, h2 {
+            word-break: break-word;
+            hyphens: auto;
+        }
+        .text-balance {
+            text-wrap: balance;
+        }
+        .grid {
+            gap: 1rem;
+        }
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .slide { padding: 0.75rem; }
+            .content-container { padding-bottom: 6rem; }
+            .card { padding: 1rem; }
+            .text-7xl { font-size: 3.5rem; }
+            .text-6xl { font-size: 3rem; }
+            .text-5xl { font-size: 2.25rem; }
+            .text-4xl { font-size: 1.8rem; }
+            .text-3xl { font-size: 1.5rem; }
+        }
+        @media (max-width: 380px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.75rem; }
+            .text-7xl { font-size: 2.5rem; }
+            .text-6xl { font-size: 2.25rem; }
+            .text-5xl { font-size: 1.75rem; }
+        }
+        table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+        }
+        table td, table th {
+            white-space: normal;
+            word-break: break-word;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+        .overflow-guard {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .flex-wrap-mobile {
+            flex-wrap: wrap;
+        }
+        .nav-container {
+            display: flex;
+            gap: 1rem;
+            background: rgba(30, 41, 59, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+    <div class="nav-container">
+        <button onclick="prevSlide()" class="nav-btn text-white hover:text-blue-400" aria-label="Previous slide">←</button>
+        <span id="slide-counter" class="text-slate-400 font-mono text-sm pt-2 min-w-[70px] text-center">1 / 17</span>
+        <button onclick="nextSlide()" class="nav-btn text-white hover:text-blue-400" aria-label="Next slide">→</button>
+    </div>
+</div>
+
+<!-- Slide 1: Title -->
+<div class="slide active" id="slide-1">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Управленческий отчёт • Март 2026</div>
+        <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-4 leading-tight text-balance">
+            От <span class="gradient-text">546K</span> к <span class="gradient-text">2M+</span>
+        </h1>
+        <h2 class="text-xl sm:text-2xl md:text-3xl text-slate-300 font-light mb-8 text-balance">Как система мотивации увеличит оборот магазина в 3 раза</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-3xl sm:text-4xl font-bold text-blue-400 metric">80%</div>
+                <div class="text-slate-400 mt-2 text-sm sm:text-base">Маржа магазина</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-3xl sm:text-4xl font-bold text-emerald-400 metric">3.7×</div>
+                <div class="text-slate-400 mt-2 text-sm sm:text-base">Рост оборота</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-3xl sm:text-4xl font-bold text-purple-400 metric">300K+</div>
+                <div class="text-slate-400 mt-2 text-sm sm:text-base">Прибыль владельца</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: The Problem -->
+<div class="slide" id="slide-2">
+    <div class="content-container animate-in">
+        <div class="text-sm text-red-400 uppercase tracking-widest mb-3">Проблема</div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-balance">Почему продавцы не продают</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="card p-5 rounded-xl border-l-4 border-red-500">
+                    <h3 class="text-lg sm:text-xl font-bold text-red-400 mb-2">Фиксированная зарплата</h3>
+                    <p class="text-slate-300 text-sm sm:text-base">Продавец получает 30K ₽ вне зависимости от оборота. Нет стимула продавать больше.</p>
+                </div>
+                <div class="card p-5 rounded-xl border-l-4 border-orange-500">
+                    <h3 class="text-lg sm:text-xl font-bold text-orange-400 mb-2">Отсутствие связи с результатом</h3>
+                    <p class="text-slate-300 text-sm sm:text-base">Продавец не видит, как его усилия влияют на доход. Работа "от звонка до звонка".</p>
+                </div>
+                <div class="card p-5 rounded-xl border-l-4 border-yellow-500">
+                    <h3 class="text-lg sm:text-xl font-bold text-yellow-400 mb-2">Консервативное поведение</h3>
+                    <p class="text-slate-300 text-sm sm:text-base">Не предлагают комплекты, не работают с возражениями, не стремятся увеличить чек.</p>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl flex flex-col justify-center">
+                <div class="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-600 mb-3 metric text-center">546K ₽</div>
+                <div class="text-xl sm:text-2xl text-slate-400 mb-6 text-center">Текущий потолок оборота</div>
+                <div class="w-full bg-slate-700 h-4 rounded-full overflow-hidden">
+                    <div class="bg-red-500 h-full" style="width: 27%"></div>
+                </div>
+                <div class="mt-3 text-slate-500 text-center">Использование потенциала: 27%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Psychology -->
+<div class="slide" id="slide-3">
+    <div class="content-container animate-in">
+        <div class="text-sm text-blue-400 uppercase tracking-widest mb-3">Психология</div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-balance">Почему процентная система работает</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card p-6 rounded-xl text-center">
+                <div class="w-14 h-14 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span class="text-2xl">🎯</span>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Внутренняя мотивация</h3>
+                <p class="text-slate-400 text-sm">Продавец становится предпринимателем внутри магазина. Его доход = его усилия.</p>
+            </div>
+            <div class="card p-6 rounded-xl text-center">
+                <div class="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span class="text-2xl">📈</span>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Геймификация</h3>
+                <p class="text-slate-400 text-sm">Каждый чек — очки. Пороги 20K и 40K создают азарт "перейти на новый уровень".</p>
+            </div>
+            <div class="card p-6 rounded-xl text-center sm:col-span-2 lg:col-span-1">
+                <div class="w-14 h-14 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span class="text-2xl">🚀</span>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Саморазвитие</h3>
+                <p class="text-slate-400 text-sm">Продавец сам учится техникам продаж, чтобы заработать больше. Без затрат на обучение.</p>
+            </div>
+        </div>
+        <div class="mt-6 card p-5 rounded-xl highlight">
+            <p class="text-base sm:text-xl text-center">"Когда продавец зарабатывает на проценте, он перестаёт быть кассиром и становится консультантом"</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: New System Overview -->
+<div class="slide" id="slide-4">
+    <div class="content-container animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-3">Новая модель</div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-balance">Система мотивации: Фикс + % + Бонус</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="card p-6 rounded-xl border-t-4 border-blue-500">
+                <div class="text-xs text-slate-400 uppercase mb-1">База</div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-bold metric mb-1">1 000 ₽</div>
+                <div class="text-slate-300 text-sm">Фикс в день</div>
+                <div class="text-xs text-slate-500 mt-1">≈ 30 000 ₽/мес</div>
+            </div>
+            <div class="card p-6 rounded-xl border-t-4 border-emerald-500">
+                <div class="text-xs text-slate-400 uppercase mb-1">Процент</div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-bold metric mb-1">3-7%</div>
+                <div class="text-slate-300 text-sm">Прогрессивная шкала</div>
+                <div class="text-xs text-slate-500 mt-1">Чем больше продаж, тем выше %</div>
+            </div>
+            <div class="card p-6 rounded-xl border-t-4 border-purple-500">
+                <div class="text-xs text-slate-400 uppercase mb-1">Бонус</div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-bold metric mb-1">10-30K</div>
+                <div class="text-slate-300 text-sm">За выполнение плана</div>
+                <div class="text-xs text-slate-500 mt-1">Командная мотивация</div>
+            </div>
+        </div>
+        <div class="card p-5 rounded-xl">
+            <h3 class="text-base sm:text-lg font-bold mb-3 text-slate-300">Прогрессивная шкала процентов</h3>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="text-center w-full sm:w-auto">
+                    <div class="text-xl sm:text-2xl font-bold text-blue-400">3%</div>
+                    <div class="text-xs text-slate-400">до 20K ₽</div>
+                </div>
+                <div class="text-slate-600 hidden sm:block">→</div>
+                <div class="text-center w-full sm:w-auto">
+                    <div class="text-xl sm:text-2xl font-bold text-emerald-400">5%</div>
+                    <div class="text-xs text-slate-400">20K – 40K ₽</div>
+                </div>
+                <div class="text-slate-600 hidden sm:block">→</div>
+                <div class="text-center w-full sm:w-auto">
+                    <div class="text-xl sm:text-2xl font-bold text-purple-400">7%</div>
+                    <div class="text-xs text-slate-400">40K+ ₽</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Calculation Example 1 -->
+<div class="slide" id="slide-5">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Пример расчёта • Сценарий 1</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Обычный день: 30 000 ₽ продаж</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Оборот</span>
+                    <span class="text-xl sm:text-2xl font-bold metric">30 000 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Процентная ставка</span>
+                    <span class="text-xl sm:text-2xl font-bold text-emerald-400">5%</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Процент от продаж</span>
+                    <span class="text-xl sm:text-2xl font-bold metric text-emerald-400">1 500 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Фиксированная часть</span>
+                    <span class="text-xl sm:text-2xl font-bold metric">1 000 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <span class="text-emerald-400 font-bold text-sm">ИТОГО за день</span>
+                    <span class="text-2xl sm:text-3xl font-bold metric text-emerald-400">2 500 ₽</span>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="text-center mb-4">
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-bold metric mb-2">75 000 ₽</div>
+                    <div class="text-slate-400">Зарплата продавца в месяц</div>
+                    <div class="text-xs text-slate-500 mt-1">при 30 днях × 30K ₽</div>
+                </div>
+                <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden mb-1">
+                    <div class="bg-emerald-500 h-full" style="width: 75%"></div>
+                </div>
+                <div class="text-center text-xs text-slate-500">В 2.5 раза больше текущей зарплаты</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Calculation Example 2 -->
+<div class="slide" id="slide-6">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Пример расчёта • Сценарий 2</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Активные продажи: 50 000 ₽</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Оборот</span>
+                    <span class="text-xl sm:text-2xl font-bold metric">50 000 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Процентная ставка</span>
+                    <span class="text-xl sm:text-2xl font-bold text-purple-400">7%</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Процент от продаж</span>
+                    <span class="text-xl sm:text-2xl font-bold metric text-purple-400">3 500 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg">
+                    <span class="text-slate-400 text-sm">Фиксированная часть</span>
+                    <span class="text-xl sm:text-2xl font-bold metric">1 000 ₽</span>
+                </div>
+                <div class="flex justify-between items-center card p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                    <span class="text-purple-400 font-bold text-sm">ИТОГО за день</span>
+                    <span class="text-2xl sm:text-3xl font-bold metric text-purple-400">4 500 ₽</span>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="text-center mb-4">
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-purple-400 metric">135 000 ₽</div>
+                    <div class="text-slate-400">Зарплата продавца в месяц</div>
+                    <div class="text-xs text-slate-500 mt-1">при 30 днях × 50K ₽</div>
+                </div>
+                <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden mb-1">
+                    <div class="bg-purple-500 h-full" style="width: 100%"></div>
+                </div>
+                <div class="text-center text-xs text-slate-500">В 4.5 раза больше текущей зарплаты</div>
+                <div class="mt-4 p-3 bg-purple-500/10 rounded-lg text-center">
+                    <span class="text-purple-400 font-bold text-sm">Мотивация максимальна</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Monthly Projection -->
+<div class="slide" id="slide-7">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Месячный прогноз</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Целевой сценарий: 40 000 ₽ в день</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-xs text-slate-400 mb-1">Оборот в месяц</div>
+                <div class="text-2xl sm:text-3xl font-bold metric text-blue-400">1 200 000 ₽</div>
+                <div class="text-xs text-slate-500 mt-1">40K × 30 дней</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-xs text-slate-400 mb-1">Зарплата продавца</div>
+                <div class="text-2xl sm:text-3xl font-bold metric text-emerald-400">90 000 ₽</div>
+                <div class="text-xs text-slate-500 mt-1">Фикс + 7% + бонус</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center">
+                <div class="text-xs text-slate-400 mb-1">Прибыль владельца</div>
+                <div class="text-2xl sm:text-3xl font-bold metric text-purple-400">870 000 ₽</div>
+                <div class="text-xs text-slate-500 mt-1">Выручка минус расходы</div>
+            </div>
+        </div>
+        <div class="card p-5 rounded-xl">
+            <div class="chart-container">
+                <canvas id="dailyChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Revenue Growth Chart -->
+<div class="slide" id="slide-8">
+    <div class="content-container animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-3">Динамика роста</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-5 text-balance">Траектория роста оборота</h2>
+        <div class="card p-5 rounded-xl mb-5">
+            <div class="chart-container">
+                <canvas id="growthChart" height="150"></canvas>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+            <div class="text-center">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold text-slate-500 metric">546K</div>
+                <div class="text-xs text-slate-500">Текущий</div>
+            </div>
+            <div class="text-center">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold text-blue-400 metric">1.5M</div>
+                <div class="text-xs text-slate-400">Цель 1</div>
+            </div>
+            <div class="text-center">
+                <div class="text-lg sm:text-xl md:text-2xl font-bold text-emerald-400 metric">2.0M+</div>
+                <div class="text-xs text-slate-400">Цель 2</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Comparison Table -->
+<div class="slide" id="slide-9">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Сравнительный анализ</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-5 text-balance">Старая система vs Новая</h2>
+        <div class="card rounded-xl overflow-x-auto">
+            <table class="w-full text-left min-w-[500px]">
+                <thead class="bg-slate-800">
+                    <tr>
+                        <th class="p-4 text-slate-400 font-normal text-sm">Показатель</th>
+                        <th class="p-4 text-slate-400 font-normal text-center text-sm">Старая модель</th>
+                        <th class="p-4 text-emerald-400 font-normal text-center text-sm">Новая модель</th>
+                        <th class="p-4 text-slate-400 font-normal text-right text-sm">Изменение</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700">
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-4 font-medium text-sm">Оборот магазина</td>
+                        <td class="p-4 text-center metric text-sm">546 000 ₽</td>
+                        <td class="p-4 text-center metric text-emerald-400 font-bold text-sm">1 500 000 ₽</td>
+                        <td class="p-4 text-right text-emerald-400 text-sm">+175%</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-4 font-medium text-sm">Зарплата продавца</td>
+                        <td class="p-4 text-center metric text-sm">30 000 ₽</td>
+                        <td class="p-4 text-center metric text-emerald-400 font-bold text-sm">90 000 ₽</td>
+                        <td class="p-4 text-right text-emerald-400 text-sm">+200%</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-4 font-medium text-sm">Прибыль владельца</td>
+                        <td class="p-4 text-center metric text-sm">406 800 ₽</td>
+                        <td class="p-4 text-center metric text-emerald-400 font-bold text-sm">1 110 000 ₽</td>
+                        <td class="p-4 text-right text-emerald-400 text-sm">+173%</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-4 font-medium text-sm">Мотивация</td>
+                        <td class="p-4 text-center text-red-400 text-sm">Низкая</td>
+                        <td class="p-4 text-center text-emerald-400 font-bold text-sm">Максимальная</td>
+                        <td class="p-4 text-right text-emerald-400 text-sm">Рост</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-4 font-medium text-sm">Средний чек</td>
+                        <td class="p-4 text-center metric text-sm">~1 500 ₽</td>
+                        <td class="p-4 text-center metric text-emerald-400 font-bold text-sm">~3 000 ₽</td>
+                        <td class="p-4 text-right text-emerald-400 text-sm">+100%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Owner's Profit -->
+<div class="slide" id="slide-10">
+    <div class="content-container animate-in">
+        <div class="text-sm text-purple-400 uppercase tracking-widest mb-3">Экономика владельца</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Как растёт ваша прибыль</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-slate-300">Структура прибыли при 1.2M ₽</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 text-sm">Выручка</span>
+                        <span class="metric text-sm">1 200 000 ₽</span>
+                    </div>
+                    <div class="flex justify-between items-center text-emerald-400">
+                        <span class="text-sm">Маржа (80%)</span>
+                        <span class="metric text-sm">960 000 ₽</span>
+                    </div>
+                    <div class="flex justify-between items-center text-red-400">
+                        <span class="text-sm">Зарплата продавца</span>
+                        <span class="metric text-sm">- 90 000 ₽</span>
+                    </div>
+                    <div class="border-t border-slate-700 pt-3 flex justify-between items-center text-xl font-bold text-purple-400">
+                        <span class="text-sm">Чистая прибыль</span>
+                        <span class="metric text-base sm:text-lg">870 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-slate-300">ROI внедрения</h3>
+                <div class="text-center mb-4">
+                    <div class="text-3xl sm:text-4xl font-bold metric text-emerald-400 mb-1">+114%</div>
+                    <div class="text-slate-400 text-sm">Рост чистой прибыли</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-500">Было:</span>
+                        <span class="metric">406 800 ₽</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-500">Стало:</span>
+                        <span class="metric text-emerald-400">870 000 ₽</span>
+                    </div>
+                    <div class="flex justify-between text-xs font-bold">
+                        <span class="text-slate-400">Разница:</span>
+                        <span class="metric text-emerald-400">+463 200 ₽/мес</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Bonus System -->
+<div class="slide" id="slide-11">
+    <div class="content-container animate-in">
+        <div class="text-sm text-orange-400 uppercase tracking-widest mb-3">Командная мотивация</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Бонус за выполнение плана</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="card p-5 rounded-xl text-center border-2 border-slate-700 hover:border-blue-500 transition-colors">
+                <div class="text-2xl sm:text-3xl font-bold metric text-blue-400 mb-1">1M ₽</div>
+                <div class="text-slate-400 mb-2 text-sm">Оборот</div>
+                <div class="text-xl sm:text-2xl font-bold text-emerald-400 metric">+10K ₽</div>
+                <div class="text-xs text-slate-500 mt-1">бонус</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center border-2 border-slate-700 hover:border-emerald-500 transition-colors">
+                <div class="text-2xl sm:text-3xl font-bold metric text-emerald-400 mb-1">1.5M ₽</div>
+                <div class="text-slate-400 mb-2 text-sm">Оборот</div>
+                <div class="text-xl sm:text-2xl font-bold text-emerald-400 metric">+20K ₽</div>
+                <div class="text-xs text-slate-500 mt-1">бонус</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center border-2 border-slate-700 hover:border-purple-500 transition-colors">
+                <div class="text-2xl sm:text-3xl font-bold metric text-purple-400 mb-1">2M ₽</div>
+                <div class="text-slate-400 mb-2 text-sm">Оборот</div>
+                <div class="text-xl sm:text-2xl font-bold text-emerald-400 metric">+30K ₽</div>
+                <div class="text-xs text-slate-500 mt-1">бонус</div>
+            </div>
+        </div>
+        <div class="card p-5 rounded-xl highlight">
+            <p class="text-sm sm:text-base text-center">Бонус делится между всеми продавцами пропорционально личным продажам. Создаёт командный дух и взаимопомощь.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Average Check Growth -->
+<div class="slide" id="slide-12">
+    <div class="content-container animate-in">
+        <div class="text-sm text-blue-400 uppercase tracking-widest mb-3">Операционная эффективность</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Как увеличивается средний чек</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="space-y-3">
+                <div class="card p-4 rounded-xl flex items-start gap-3">
+                    <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1">1</div>
+                    <div>
+                        <h3 class="font-bold text-base">Кросс-продажи</h3>
+                        <p class="text-slate-400 text-sm">Продавец предлагает комплементарные товары к основной покупке</p>
+                    </div>
+                </div>
+                <div class="card p-4 rounded-xl flex items-start gap-3">
+                    <div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1">2</div>
+                    <div>
+                        <h3 class="font-bold text-base">Апселлинг</h3>
+                        <p class="text-slate-400 text-sm">Предложение более дорогой альтернативы или премиум-версии</p>
+                    </div>
+                </div>
+                <div class="card p-4 rounded-xl flex items-start gap-3">
+                    <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1">3</div>
+                    <div>
+                        <h3 class="font-bold text-base">Работа с возражениями</h3>
+                        <p class="text-slate-400 text-sm">Активное преодоление сомнений клиента вместо пассивного ожидания</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-5 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-center">Динамика среднего чека</h3>
+                <div class="flex items-end justify-around h-48 gap-3">
+                    <div class="flex flex-col items-center gap-1 flex-1">
+                        <div class="w-full bg-slate-700 rounded-t-lg relative" style="height: 40%"></div>
+                        <div class="text-xs font-bold metric">1 500 ₽</div>
+                        <div class="text-xs text-slate-400 text-center">Сейчас</div>
+                    </div>
+                    <div class="flex flex-col items-center gap-1 flex-1">
+                        <div class="w-full bg-blue-500 rounded-t-lg relative" style="height: 70%"></div>
+                        <div class="text-xs font-bold text-blue-400">2 500 ₽</div>
+                        <div class="text-xs text-slate-400 text-center">Месяц 1</div>
+                    </div>
+                    <div class="flex flex-col items-center gap-1 flex-1">
+                        <div class="w-full bg-emerald-500 rounded-t-lg relative" style="height: 100%"></div>
+                        <div class="text-xs font-bold text-emerald-400">3 000+ ₽</div>
+                        <div class="text-xs text-slate-400 text-center">Месяц 3</div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center text-emerald-400 font-bold text-sm">Рост на 100%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Behavioral Changes -->
+<div class="slide" id="slide-13">
+    <div class="content-container animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-3">Трансформация персонала</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Как меняется поведение продавцов</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-5 rounded-xl border-l-4 border-red-500">
+                <h3 class="text-lg font-bold text-red-400 mb-4">До: Пассивный продавец</h3>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-red-500 flex-shrink-0">✗</span>
+                        <span>Ждёт, пока клиент сам выберет товар</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-red-500 flex-shrink-0">✗</span>
+                        <span>Не предлагает дополнительные товары</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-red-500 flex-shrink-0">✗</span>
+                        <span>Боится навязчивости</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-red-500 flex-shrink-0">✗</span>
+                        <span>Работает "от звонка до звонка"</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card p-5 rounded-xl border-l-4 border-emerald-500">
+                <h3 class="text-lg font-bold text-emerald-400 mb-4">После: Предприниматель</h3>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-emerald-500 flex-shrink-0">✓</span>
+                        <span>Активно консультирует и подбирает решения</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-emerald-500 flex-shrink-0">✓</span>
+                        <span>Предлагает комплекты и второй товар</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-emerald-500 flex-shrink-0">✓</span>
+                        <span>Видит в клиенте возможность, а не проблему</span>
+                    </li>
+                    <li class="flex items-start gap-2 text-sm">
+                        <span class="text-emerald-500 flex-shrink-0">✓</span>
+                        <span>Стремится максимизировать чек</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Implementation Roadmap -->
+<div class="slide" id="slide-14">
+    <div class="content-container animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-3">Внедрение</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">План запуска: 30 дней</h2>
+        <div class="relative">
+            <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-slate-700"></div>
+            <div class="space-y-5">
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold text-sm z-10 flex-shrink-0">1</div>
+                    <div class="card p-4 rounded-xl flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-base font-bold">Неделя 1: Подготовка</h3>
+                            <span class="text-xs text-slate-500">Дни 1-7</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Разработка табеля, инструктаж персонала, настройка учёта продаж по сотрудникам</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center font-bold text-sm z-10 flex-shrink-0">2</div>
+                    <div class="card p-4 rounded-xl flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-base font-bold">Неделя 2: Мягкий запуск</h3>
+                            <span class="text-xs text-slate-500">Дни 8-14</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Пилот на одной смене, корректировка процентов, обучение техникам продаж</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center font-bold text-sm z-10 flex-shrink-0">3</div>
+                    <div class="card p-4 rounded-xl flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-base font-bold">Неделя 3: Полный запуск</h3>
+                            <span class="text-xs text-slate-500">Дни 15-21</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Внедрение для всех продавцов, ежедневный мониторинг показателей</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold text-sm z-10 flex-shrink-0">4</div>
+                    <div class="card p-4 rounded-xl flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-base font-bold">Неделя 4: Оптимизация</h3>
+                            <span class="text-xs text-slate-500">Дни 22-30</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Анализ результатов, корректировка планов, первая выплата бонусов</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Risk Mitigation -->
+<div class="slide" id="slide-15">
+    <div class="content-container animate-in">
+        <div class="text-sm text-yellow-400 uppercase tracking-widest mb-3">Управление рисками</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Защита от потерь</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-5 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-slate-300">Потенциальные риски</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <div class="font-bold text-red-400 mb-1 text-sm">Агрессивные продажи</div>
+                        <div class="text-xs text-slate-400">Продавцы могут давить на клиентов ради процента</div>
+                    </div>
+                    <div class="p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <div class="font-bold text-red-400 mb-1 text-sm">Игнорирование мелких чеков</div>
+                        <div class="text-xs text-slate-400">Фокус только на крупных покупателях</div>
+                    </div>
+                    <div class="p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                        <div class="font-bold text-red-400 mb-1 text-sm">Конфликты в команде</div>
+                        <div class="text-xs text-slate-400">Борьба за клиентов между продавцами</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-5 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-slate-300">Механизмы защиты</h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-emerald-400 mb-1 text-sm">Сохранённый фикс</div>
+                        <div class="text-xs text-slate-400">1 000 ₽/день гарантирует базовый доход при любом обороте</div>
+                    </div>
+                    <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-emerald-400 mb-1 text-sm">Командный бонус</div>
+                        <div class="text-xs text-slate-400">Стимулирует сотрудничество, а не конкуренцию</div>
+                    </div>
+                    <div class="p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-emerald-400 mb-1 text-sm">Контроль качества</div>
+                        <div class="text-xs text-slate-400">Тайные покупатели, отзывы клиентов, KPI удержания</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 16: Financial Summary -->
+<div class="slide" id="slide-16">
+    <div class="content-container animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-3">Финансовый итог</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-balance">Экономический эффект за год</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="card p-5 rounded-xl text-center bg-gradient-to-br from-slate-800 to-slate-900">
+                <div class="text-xs text-slate-400 mb-1">Дополнительная прибыль</div>
+                <div class="text-xl sm:text-2xl font-bold metric text-emerald-400 mb-1">5.5M ₽</div>
+                <div class="text-xs text-slate-500">в год</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center bg-gradient-to-br from-slate-800 to-slate-900">
+                <div class="text-xs text-slate-400 mb-1">Рост оборота</div>
+                <div class="text-xl sm:text-2xl font-bold metric text-blue-400 mb-1">+18M ₽</div>
+                <div class="text-xs text-slate-500">18M vs 6.5M</div>
+            </div>
+            <div class="card p-5 rounded-xl text-center bg-gradient-to-br from-slate-800 to-slate-900">
+                <div class="text-xs text-slate-400 mb-1">Окупаемость</div>
+                <div class="text-xl sm:text-2xl font-bold metric text-purple-400 mb-1">Момент</div>
+                <div class="text-xs text-slate-500">С первого месяца</div>
+            </div>
+        </div>
+        <div class="card p-5 rounded-xl">
+            <div class="chart-container">
+                <canvas id="yearChart" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17: Final -->
+<div class="slide" id="slide-17">
+    <div class="content-container animate-in text-center">
+        <div class="text-4xl sm:text-5xl mb-5">🎯</div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 leading-tight text-balance">
+            Правильная система мотивации превращает продавца<br>
+            <span class="gradient-text">из сотрудника в партнёра</span>
+        </h2>
+        <div class="card p-6 rounded-xl mb-6 text-left">
+            <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
+                Когда продавец зарабатывает больше — владелец зарабатывает ещё больше. 
+                Это не расходы, это инвестиция в рост.
+            </p>
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold metric text-emerald-400">90 000 ₽</div>
+                    <div class="text-xs text-slate-500">Зарплата продавца</div>
+                </div>
+                <div>
+                    <div class="text-xl sm:text-2xl font-bold metric text-purple-400">870 000 ₽</div>
+                    <div class="text-xs text-slate-500">Прибыль владельца</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-base sm:text-lg text-slate-400 font-light">
+            Готовы увеличить оборот в <span class="text-emerald-400 font-bold">3 раза</span>?
+        </div>
+    </div>
+</div>
+
+<script>
+let currentSlide = 1;
+const totalSlides = 17;
+
+function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+    const slide = document.getElementById(`slide-${n}`);
+    if (slide) {
+        slide.classList.add('active');
+        document.getElementById('slide-counter').textContent = `${n} / ${totalSlides}`;
+        
+        // Initialize charts when slide is shown
+        if (n === 7) setTimeout(() => initDailyChart(), 100);
+        if (n === 8) setTimeout(() => initGrowthChart(), 100);
+        if (n === 16) setTimeout(() => initYearChart(), 100);
+    }
+}
+
+function nextSlide() {
+    if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+    }
+}
+
+function prevSlide() {
+    if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+});
+
+// Touch swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+            nextSlide();
+        } else {
+            prevSlide();
+        }
+    }
+});
+
+// Chart configurations
+function initDailyChart() {
+    const ctx = document.getElementById('dailyChart');
+    if (!ctx) return;
+    
+    // Destroy existing chart if any
+    if (ctx.chart) {
+        ctx.chart.destroy();
+    }
+    
+    ctx.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Текущий', 'Целевой'],
+            datasets: [{
+                label: 'Оборот (тыс. ₽)',
+                data: [18.2, 40],
+                backgroundColor: ['#64748b', '#10b981'],
+                borderRadius: 6
+            }, {
+                label: 'Зарплата (тыс. ₽)',
+                data: [30, 90],
+                backgroundColor: ['#94a3b8', '#34d399'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    labels: { color: '#94a3b8', font: { size: 11 } }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#64748b', font: { size: 10 } },
+                    grid: { color: '#334155' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 10 } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+function initGrowthChart() {
+    const ctx = document.getElementById('growthChart');
+    if (!ctx) return;
+    
+    if (ctx.chart) {
+        ctx.chart.destroy();
+    }
+    
+    ctx.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Текущий', 'М1', 'М2', 'М3', 'М6', 'М12'],
+            datasets: [{
+                label: 'Оборот (млн ₽)',
+                data: [0.546, 0.8, 1.0, 1.2, 1.5, 2.0],
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#10b981'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    ticks: { 
+                        color: '#64748b', 
+                        font: { size: 10 },
+                        callback: function(value) { return value + 'M'; } 
+                    },
+                    grid: { color: '#334155' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 10 } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+function initYearChart() {
+    const ctx = document.getElementById('yearChart');
+    if (!ctx) return;
+    
+    if (ctx.chart) {
+        ctx.chart.destroy();
+    }
+    
+    ctx.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Текущая модель', 'Новая модель'],
+            datasets: [{
+                label: 'Годовая прибыль (млн ₽)',
+                data: [4.9, 10.4],
+                backgroundColor: ['#64748b', '#10b981'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#64748b', font: { size: 10 } },
+                    grid: { color: '#334155' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 10 } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
+// Initialize first slide
+showSlide(1);
+</script>
+</body>
+</html>
