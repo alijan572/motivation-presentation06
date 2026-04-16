@@ -2,360 +2,446 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Запуск бюстгальтеров на WB | Аналитика 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовая модель: продажа бюстгальтеров на Wildberries</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: radial-gradient(circle at 10% 20%, #0b1120, #030712);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-            color: #f1f5f9;
-        }
-        .slide {
-            min-height: 100vh;
-            display: none;
-            padding: 1.5rem;
-            position: relative;
-        }
-        .slide.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .card {
-            background: rgba(15, 25, 45, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            border-radius: 2rem;
-            transition: all 0.25s;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
-        }
-        .card:hover {
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-btn {
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 60px;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid rgba(100, 116, 139, 0.5);
-        }
-        .nav-btn:active { transform: scale(0.94); background: #1e293b; }
-        .metric-num {
-            font-variant-numeric: tabular-nums;
-            font-weight: 800;
-        }
-        canvas { max-height: 260px; width: 100% !important; }
-        .badge {
-            background: rgba(59,130,246,0.2);
-            border-radius: 40px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.7rem;
-            font-weight: 500;
-        }
-        @media (max-width: 640px) {
-            .slide { padding: 1rem; }
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.6rem; }
-        }
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; }
+        .slide { min-height: 100vh; display: none; padding: 2rem; }
+        .slide.active { display: flex; flex-direction: column; justify-content: center; }
+        .gradient-text { background: linear-gradient(135deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(148, 163, 184, 0.1); }
+        .nav-btn { transition: all 0.3s; }
+        .nav-btn:hover { transform: scale(1.1); }
+        .highlight { background: linear-gradient(120deg, rgba(96, 165, 250, 0.2) 0%, rgba(52, 211, 153, 0.2) 100%); border-left: 4px solid #60a5fa; }
+        .metric { font-variant-numeric: tabular-nums; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.6s ease-out; }
     </style>
 </head>
-<body>
+<body class="overflow-hidden">
 
-<!-- навигация -->
-<div class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50">
-    <div class="flex gap-4 bg-slate-800/70 backdrop-blur-md px-5 py-2 rounded-full border border-slate-600 shadow-2xl">
-        <button onclick="prevSlide()" class="nav-btn text-white text-xl">←</button>
-        <span id="slide-counter" class="text-slate-300 font-mono text-sm py-2 min-w-[70px] text-center">1 / 9</span>
-        <button onclick="nextSlide()" class="nav-btn text-white text-xl">→</button>
-    </div>
+<!-- Navigation -->
+<div class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-4 bg-slate-800/90 px-6 py-3 rounded-full backdrop-blur-md border border-slate-700">
+    <button onclick="prevSlide()" class="nav-btn text-white hover:text-blue-400">←</button>
+    <span id="slide-counter" class="text-slate-400 font-mono text-sm pt-1">1 / 12</span>
+    <button onclick="nextSlide()" class="nav-btn text-white hover:text-blue-400">→</button>
 </div>
 
-<!-- слайд 1: титул -->
+<!-- Slide 1: Title -->
 <div class="slide active" id="slide-1">
-    <div class="max-w-5xl mx-auto text-center">
-        <div class="text-blue-400 text-sm tracking-widest mb-3">⚡ АНАЛИТИЧЕСКИЙ ОТЧЕТ | АПРЕЛЬ 2026</div>
-        <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-5">
-            Запуск бюстгальтеров <br>на <span class="gradient-text">Wildberries</span>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-4">Финансовая модель • Март 2026</div>
+        <h1 class="text-7xl font-bold mb-6 leading-tight">
+            Продажа бюстгальтеров на <span class="gradient-text">Wildberries</span>
         </h1>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">69 артикулов, 25 602 единицы, закупка 5,1 млн ₽ — как выйти на чистую прибыль 6,2 млн ₽</p>
-        <div class="grid grid-cols-3 gap-5 max-w-2xl mx-auto mt-12">
-            <div class="card p-5 text-center"><div class="text-3xl font-bold text-blue-400">69</div><div class="text-slate-400 text-sm">артикулов</div></div>
-            <div class="card p-5 text-center"><div class="text-3xl font-bold text-emerald-400">25 602</div><div class="text-slate-400 text-sm">единиц</div></div>
-            <div class="card p-5 text-center"><div class="text-3xl font-bold text-purple-400">5,1M</div><div class="text-slate-400 text-sm">закупка ₽</div></div>
+        <h2 class="text-3xl text-slate-300 font-light mb-12">Расчёт наценки, расходов и чистой прибыли</h2>
+        <div class="grid grid-cols-3 gap-8 mt-16">
+            <div class="card p-6 rounded-xl">
+                <div class="text-4xl font-bold text-blue-400 metric">10 440 шт</div>
+                <div class="text-slate-400 mt-2">Объём партии</div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="text-4xl font-bold text-emerald-400 metric">1.77 млн ₽</div>
+                <div class="text-slate-400 mt-2">Себестоимость закупки</div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="text-4xl font-bold text-purple-400 metric">170 ₽/шт</div>
+                <div class="text-slate-400 mt-2">Себестоимость единицы</div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- слайд 2: сводка по партиям + чашки -->
+<!-- Slide 2: Данные заказа -->
 <div class="slide" id="slide-2">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-emerald-400 text-sm tracking-wider mb-2">📦 СВОДКА ПОСТАВОК</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-5">2 файла → 1 стратегия</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-6">
-                <div class="flex justify-between border-b border-slate-700 pb-2 mb-2"><span>Файл 1 (SY-9999)</span><span class="font-mono">29 арт. / 10 440 шт</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-2 mb-2"><span>Файл 2 (SY-9999—1)</span><span class="font-mono">40 арт. / 14 886 шт</span></div>
-                <div class="flex justify-between"><span>Сумма закупки (обе)</span><span class="font-bold">5 149 426 ₽</span></div>
-                <div class="mt-4 text-slate-400 text-sm">Чашки: B, C, D, DD | Размеры: 36-42 / 38-44 / 40-46 / 46-52</div>
-            </div>
-            <div class="card p-6">
-                <div class="text-center text-lg font-semibold mb-3">Распределение по чашкам</div>
-                <div class="flex justify-around text-center">
-                    <div><span class="text-2xl font-bold text-blue-300">20</span><div class="text-xs">B CUP</div></div>
-                    <div><span class="text-2xl font-bold text-blue-300">5</span><div class="text-xs">C CUP</div></div>
-                    <div><span class="text-2xl font-bold text-blue-300">3</span><div class="text-xs">D CUP</div></div>
-                    <div><span class="text-2xl font-bold text-blue-300">1</span><div class="text-xs">DD CUP</div></div>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-blue-400 uppercase tracking-widest mb-4">Что заказали</div>
+        <h2 class="text-5xl font-bold mb-12">Структура заказа (бюстгальтеры)</h2>
+        <div class="grid grid-cols-2 gap-12">
+            <div class="space-y-6">
+                <div class="card p-6 rounded-xl">
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-2">
+                        <span class="text-slate-400">Артикулы</span>
+                        <span class="font-bold">29 позиций</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-2">
+                        <span class="text-slate-400">Коробок</span>
+                        <span class="font-bold">29 коробок</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-2">
+                        <span class="text-slate-400">Штук в коробке</span>
+                        <span class="font-bold">360 шт</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Итого единиц</span>
+                        <span class="text-2xl font-bold text-blue-400">10 440 шт</span>
+                    </div>
                 </div>
-                <div class="mt-5"><div class="badge inline-block">Средняя цена закупки: 17,19 ¥</div></div>
+                <div class="card p-6 rounded-xl">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Общая стоимость (руб)</span>
+                        <span class="text-2xl font-bold text-emerald-400">1 772 690 ₽</span>
+                    </div>
+                    <div class="text-sm text-slate-500 mt-2">* по данным инвойса, курс 11.8 ₽/юань</div>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl flex flex-col justify-center">
+                <h3 class="text-xl font-bold mb-4 text-center">Средняя себестоимость</h3>
+                <div class="text-5xl font-bold text-center text-purple-400 metric mb-4">170 ₽/шт</div>
+                <div class="text-center text-slate-400">Закупочная цена за 1 бюстгальтер</div>
+                <div class="w-full mt-6 h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div class="bg-purple-500 h-full" style="width: 100%"></div>
+                </div>
+                <div class="text-center text-xs text-slate-500 mt-2">База для расчёта наценки</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- слайд 3: ценовые сегменты + гистограмма -->
+<!-- Slide 3: Расходы на Wildberries -->
 <div class="slide" id="slide-3">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-blue-400 text-sm tracking-wider mb-2">📊 АНАЛИЗ ЗАКУПОЧНЫХ ЦЕН</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Сегментация по цене</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-5">
-                <div class="space-y-2">
-                    <div class="flex justify-between"><span>11–13 ¥</span><span class="font-bold">14 арт. (20,3%)</span><div class="w-32 bg-slate-700 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full w-[20%]"></div></div></div>
-                    <div class="flex justify-between"><span>13–16 ¥</span><span class="font-bold">13 арт. (18,8%)</span></div>
-                    <div class="flex justify-between"><span>16–19 ¥</span><span class="font-bold">15 арт. (21,7%)</span></div>
-                    <div class="flex justify-between"><span>19–23 ¥</span><span class="font-bold">27 арт. (39,1%)</span></div>
-                </div>
-                <div class="mt-5 text-sm text-slate-400">Мин 11,2 ¥ | Макс 22,5 ¥ | Медиана 16,0 ¥</div>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-red-400 uppercase tracking-widest mb-4">Структура затрат</div>
+        <h2 class="text-5xl font-bold mb-12">Какие расходы несёт продавец на WB</h2>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-red-400 mb-4">Обязательные</h3>
+                <ul class="space-y-3">
+                    <li class="flex justify-between"><span>Комиссия WB (15-20%)</span><span class="text-emerald-400">~18%</span></li>
+                    <li class="flex justify-between"><span>Логистика до покупателя</span><span class="text-emerald-400">≈ 70 ₽</span></li>
+                    <li class="flex justify-between"><span>Обработка заказа (сборка)</span><span class="text-emerald-400">≈ 30 ₽</span></li>
+                    <li class="flex justify-between"><span>Хранение на складе WB</span><span class="text-emerald-400">≈ 5 ₽/мес</span></li>
+                    <li class="flex justify-between"><span>Налог (УСН 6%)</span><span class="text-emerald-400">6% с оборота</span></li>
+                </ul>
             </div>
-            <div class="card p-3">
-                <canvas id="priceHistogram" height="180"></canvas>
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-orange-400 mb-4">Дополнительные / Риски</h3>
+                <ul class="space-y-3">
+                    <li class="flex justify-between"><span>Возвраты (5-10%)</span><span class="text-yellow-400">~8%</span></li>
+                    <li class="flex justify-between"><span>Реклама / продвижение</span><span class="text-yellow-400">по желанию</span></li>
+                    <li class="flex justify-between"><span>Штрафы за просрочку</span><span class="text-yellow-400">0–100 ₽/заказ</span></li>
+                    <li class="flex justify-between"><span>Утилизация неликвида</span><span class="text-yellow-400">≈ 20 ₽/шт</span></li>
+                </ul>
             </div>
+        </div>
+        <div class="mt-6 card p-4 rounded-xl highlight">
+            <p class="text-center">Итоговая доля расходов от розничной цены — от 40% до 55% в зависимости от наценки</p>
         </div>
     </div>
 </div>
 
-<!-- слайд 4: нейросетевая кластеризация -->
+<!-- Slide 4: Расчёт цены и наценки -->
 <div class="slide" id="slide-4">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-purple-400 text-sm tracking-wider mb-2">🧠 НЕЙРОСЕТЕВАЯ КЛАСТЕРИЗАЦИЯ</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">4 кластера (K‑means)</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="card p-4 text-center"><div class="text-emerald-300 font-bold">Бюджетный</div><div class="text-lg font-mono">14,12 ¥</div><div class="text-xs">20 арт. / 7 200 шт</div><div class="text-slate-400 text-xs">ROI 165%</div></div>
-            <div class="card p-4 text-center"><div class="text-blue-300 font-bold">Средний</div><div class="text-lg font-mono">15,43 ¥</div><div class="text-xs">18 арт. / 7 296 шт</div><div class="text-slate-400 text-xs">ROI 140%</div></div>
-            <div class="card p-4 text-center"><div class="text-orange-300 font-bold">Дорогой</div><div class="text-lg font-mono">16,25 ¥</div><div class="text-xs">4 арт. / 1 440 шт</div><div class="text-slate-400 text-xs">ROI 125%</div></div>
-            <div class="card p-4 text-center"><div class="text-purple-300 font-bold">Премиум</div><div class="text-lg font-mono">20,77 ¥</div><div class="text-xs">27 арт. / 9 666 шт</div><div class="text-slate-400 text-xs">ROI 110%</div></div>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-4">Ключевой расчёт</div>
+        <h2 class="text-5xl font-bold mb-8">Какая наценка нужна для безубыточности?</h2>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="card p-6 rounded-xl">
+                <canvas id="breakevenChart" height="200"></canvas>
+            </div>
+            <div class="card p-6 rounded-xl flex flex-col justify-center">
+                <div class="text-lg text-slate-300 mb-4">При себестоимости 170 ₽:</div>
+                <div class="space-y-3">
+                    <div class="flex justify-between"><span>Минимальная цена для нулевой прибыли</span><span class="font-bold text-red-400">~380 ₽</span></div>
+                    <div class="flex justify-between"><span>Рекомендуемая розничная цена</span><span class="font-bold text-emerald-400 text-xl">590–690 ₽</span></div>
+                    <div class="flex justify-between"><span>Наценка от себестоимости</span><span class="font-bold text-purple-400">250% – 300%</span></div>
+                </div>
+                <div class="mt-6 p-3 bg-slate-700/50 rounded-lg text-center text-sm">На WB нижнее бельё продаётся по 500–1200 ₽. Ваша цена 650 ₽ — конкурентна.</div>
+            </div>
         </div>
-        <div class="card p-4 mt-5">
-            <canvas id="roiClusterChart" height="150"></canvas>
-        </div>
-        <p class="text-xs text-slate-500 mt-3 text-center">Silhouette Score: 0.68 | Признаки: цена, чашка, ширина ряда</p>
     </div>
 </div>
 
-<!-- слайд 5: юнит-экономика (700₽) -->
+<!-- Slide 5: Финансовая модель при цене 650 ₽ -->
 <div class="slide" id="slide-5">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-emerald-400 text-sm tracking-wider mb-2">📐 ЮНИТ-ЭКОНОМИКА</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">При розничной цене 700 ₽</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-5 space-y-2">
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Закупка</span><span>203 ₽</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Комиссия WB (15%)</span><span class="text-red-300">105 ₽</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Логистика + обработка</span><span class="text-red-300">85 ₽</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Хранение (30 дней)</span><span class="text-red-300">6 ₽</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Эквайринг + резерв возвратов 7%</span><span class="text-red-300">59 ₽</span></div>
-                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Налог (УСН 15% с прибыли)</span><span class="text-red-300">~38 ₽</span></div>
-                <div class="flex justify-between font-bold text-lg pt-2"><span>Чистая прибыль с 1 шт</span><span class="text-emerald-400">204 ₽</span></div>
-            </div>
-            <div class="card p-5 flex flex-col justify-center items-center text-center">
-                <div class="text-5xl font-bold text-emerald-400 metric-num">34,4%</div>
-                <div class="text-slate-300">Маржинальность</div>
-                <div class="text-2xl font-bold mt-3 metric-num">119%</div>
-                <div class="text-slate-300">ROI</div>
-                <div class="badge mt-3">окупаемость ~1,5 мес</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- слайд 6: прогноз прибыли общий + диаграмма -->
-<div class="slide" id="slide-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-blue-400 text-sm tracking-wider mb-2">💰 ПРОГНОЗ ПРИБЫЛИ (ВСЯ ПАРТИЯ)</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">25 602 единицы при 700 ₽</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-5 text-center space-y-3">
-                <div><div class="text-slate-400 text-sm">Выручка</div><div class="text-3xl font-bold">17,9 млн ₽</div></div>
-                <div><div class="text-slate-400 text-sm">Закупка всего</div><div class="text-2xl">5,15 млн ₽</div></div>
-                <div><div class="text-slate-400 text-sm">Чистая прибыль</div><div class="text-4xl font-bold text-emerald-400">6,2 млн ₽</div></div>
-                <div><span class="badge">ROI партии 120%</span></div>
-            </div>
-            <div class="card p-3">
-                <canvas id="profitTotalChart" height="180"></canvas>
-            </div>
-        </div>
-        <div class="grid grid-cols-3 gap-3 mt-5 text-center">
-            <div class="card p-2"><span class="text-emerald-400 font-bold">+114%</span><br><span class="text-xs">к текущей модели</span></div>
-            <div class="card p-2"><span class="text-emerald-400 font-bold">2–3 мес</span><br><span class="text-xs">возврат инвестиций</span></div>
-            <div class="card p-2"><span class="text-emerald-400 font-bold">30,5%</span><br><span class="text-xs">чистая маржа</span></div>
-        </div>
-    </div>
-</div>
-
-<!-- слайд 7: риски по оферте WB + штрафы -->
-<div class="slide" id="slide-7">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-red-400 text-sm tracking-wider mb-2">⚠️ АНАЛИЗ РИСКОВ (ОФЕРТА WB)</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Что может помешать?</h2>
-        <div class="grid md:grid-cols-2 gap-5">
-            <div class="card p-5">
-                <div class="font-bold text-red-300">Обязательные требования</div>
-                <ul class="list-disc list-inside text-sm space-y-1 mt-2 text-slate-300">
-                    <li>Маркировка «Честный ЗНАК» — блокировка карточек без неё</li>
-                    <li>Сертификация ТР ТС 017/2011 (срок 1-2 недели)</li>
-                    <li>Точные габариты и вес — штраф до 50 000 ₽</li>
-                </ul>
-                <div class="mt-4 font-bold text-orange-300">Штрафы WB</div>
-                <div class="grid grid-cols-2 gap-2 text-sm mt-1">
-                    <span>Неверные габариты</span><span class="text-red-300">до 50K</span>
-                    <span>Отсутствие документов</span><span class="text-red-300">до 100K</span>
-                    <span>Нарушение прав на фото</span><span class="text-red-300">до 500K</span>
-                    <span>Просрочка поставки</span><span class="text-red-300">до 10K</span>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-blue-400 uppercase tracking-widest mb-4">Базовый сценарий</div>
+        <h2 class="text-5xl font-bold mb-8">Розничная цена: 650 ₽ / шт</h2>
+        <div class="grid grid-cols-3 gap-6">
+            <div class="card p-6 rounded-xl">
+                <div class="text-slate-400 text-sm">Выручка с 1 шт</div>
+                <div class="text-3xl font-bold text-white">650 ₽</div>
+                <div class="h-px bg-slate-700 my-3"></div>
+                <div class="text-slate-400 text-sm">Себестоимость</div>
+                <div class="text-xl text-red-400">−170 ₽</div>
+                <div class="text-slate-400 text-sm mt-2">Комиссия WB (18%)</div>
+                <div class="text-xl text-red-400">−117 ₽</div>
+                <div class="text-slate-400 text-sm mt-2">Логистика + обработка</div>
+                <div class="text-xl text-red-400">−100 ₽</div>
+                <div class="text-slate-400 text-sm mt-2">Налог УСН 6%</div>
+                <div class="text-xl text-red-400">−39 ₽</div>
+                <div class="text-slate-400 text-sm mt-2">Хранение + возвраты (8%)</div>
+                <div class="text-xl text-red-400">−57 ₽</div>
+                <div class="border-t border-slate-700 my-3"></div>
+                <div class="flex justify-between text-xl font-bold">
+                    <span>Чистая прибыль с 1 шт</span>
+                    <span class="text-emerald-400">167 ₽</span>
                 </div>
             </div>
-            <div class="card p-5">
-                <div class="font-bold text-yellow-300">Критические риски</div>
-                <ul class="list-disc list-inside text-sm mt-2 space-y-1">
-                    <li>Принудительные скидки WB (платформа снижает цену)</li>
-                    <li>Блокировка аккаунта по п.9.11.3 оферты</li>
-                    <li>Удержание товаров при задолженности</li>
-                    <li>Приостановка выплат до 21 дня при проверке</li>
-                </ul>
-                <div class="mt-4 bg-slate-800/50 p-3 rounded-xl text-sm">✅ Управляемые риски: маркировка, сертификация, возвраты — все решаемы на этапе подготовки.</div>
+            <div class="card p-6 rounded-xl flex flex-col justify-center">
+                <div class="text-center">
+                    <div class="text-slate-400">Прибыль с партии (10 440 шт)</div>
+                    <div class="text-5xl font-bold text-emerald-400 metric mt-2">1 743 480 ₽</div>
+                    <div class="text-sm text-slate-500 mt-4">Рентабельность продаж: 25.7%</div>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col justify-center">
+                <div class="text-center">
+                    <div class="text-sm text-emerald-400">Окупаемость инвестиций (ROI)</div>
+                    <div class="text-4xl font-bold metric mt-2">98%</div>
+                    <div class="text-xs text-slate-400 mt-2">Прибыль почти равна себестоимости заказа</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- слайд 8: план действий 30 дней -->
+<!-- Slide 6: Сравнение разных цен -->
+<div class="slide" id="slide-6">
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-purple-400 uppercase tracking-widest mb-4">Анализ чувствительности</div>
+        <h2 class="text-5xl font-bold mb-8">Прибыль при разной розничной цене</h2>
+        <div class="card p-6 rounded-xl">
+            <canvas id="priceProfitChart" height="250"></canvas>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-6 text-center">
+            <div class="card p-3 rounded-lg">
+                <div class="text-slate-400">Цена 550 ₽</div>
+                <div class="text-xl font-bold text-yellow-400">+92 ₽/шт</div>
+                <div class="text-sm">Прибыль 960 тыс. ₽</div>
+            </div>
+            <div class="card p-3 rounded-lg border border-emerald-500">
+                <div class="text-slate-400">Цена 650 ₽</div>
+                <div class="text-xl font-bold text-emerald-400">+167 ₽/шт</div>
+                <div class="text-sm">Прибыль 1.74 млн ₽</div>
+            </div>
+            <div class="card p-3 rounded-lg">
+                <div class="text-slate-400">Цена 750 ₽</div>
+                <div class="text-xl font-bold text-blue-400">+242 ₽/шт</div>
+                <div class="text-sm">Прибыль 2.53 млн ₽</div>
+            </div>
+        </div>
+        <div class="mt-4 text-xs text-slate-500 text-center">* При повышении цены выше 700 ₽ возможно падение спроса — тестируйте</div>
+    </div>
+</div>
+
+<!-- Slide 7: Влияние возвратов -->
+<div class="slide" id="slide-7">
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-yellow-400 uppercase tracking-widest mb-4">Управление рисками</div>
+        <h2 class="text-5xl font-bold mb-8">Как возвраты съедают прибыль</h2>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="card p-6 rounded-xl">
+                <canvas id="returnsChart" height="200"></canvas>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-xl font-bold mb-4">При цене 650 ₽</h3>
+                <ul class="space-y-3">
+                    <li class="flex justify-between"><span>Возврат 5%</span><span class="text-emerald-400">чистая прибыль 1.86 млн ₽</span></li>
+                    <li class="flex justify-between"><span>Возврат 8% (база)</span><span class="text-yellow-400">чистая прибыль 1.74 млн ₽</span></li>
+                    <li class="flex justify-between"><span>Возврат 15%</span><span class="text-red-400">чистая прибыль 1.46 млн ₽</span></li>
+                </ul>
+                <div class="mt-6 p-3 bg-slate-700/50 rounded-lg">
+                    <div class="text-sm">💡 Как снизить возвраты:</div>
+                    <ul class="text-xs text-slate-400 list-disc pl-4 mt-1">
+                        <li>Точные размерные сетки в карточке</li>
+                        <li>Качественные фото и видео товара</li>
+                        <li>Быстрая обработка вопросов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Налоги и юр. форма -->
 <div class="slide" id="slide-8">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-orange-400 text-sm tracking-wider mb-2">📅 ДОРОЖНАЯ КАРТА</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-5">Запуск за 4–5 недель</h2>
-        <div class="grid md:grid-cols-5 gap-3">
-            <div class="card p-3 text-center"><div class="text-2xl">1</div><div class="font-bold">Сертификация</div><div class="text-xs text-slate-400">ТР ТС 017/2011, 1-2 нед</div></div>
-            <div class="card p-3 text-center"><div class="text-2xl">2</div><div class="font-bold">Маркировка</div><div class="text-xs text-slate-400">Честный ЗНАК, 3-5 дн</div></div>
-            <div class="card p-3 text-center"><div class="text-2xl">3</div><div class="font-bold">Тестовая партия</div><div class="text-xs text-slate-400">5-10 артикулов, 2 нед</div></div>
-            <div class="card p-3 text-center"><div class="text-2xl">4</div><div class="font-bold">Оптимизация</div><div class="text-xs text-slate-400">фото, цены, реклама</div></div>
-            <div class="card p-3 text-center"><div class="text-2xl">5</div><div class="font-bold">Автоматизация</div><div class="text-xs text-slate-400">контроль остатков, штрафов</div></div>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-slate-400 uppercase tracking-widest mb-4">Юридический аспект</div>
+        <h2 class="text-5xl font-bold mb-8">Какие налоги платить продавцу на WB</h2>
+        <div class="grid grid-cols-3 gap-6">
+            <div class="card p-6 rounded-xl">
+                <div class="text-2xl font-bold text-center text-blue-400 mb-2">Самозанятый</div>
+                <div class="text-sm text-slate-400">НПД: 4-6% с дохода</div>
+                <div class="mt-4 text-slate-300">✔️ Подходит при обороте до 2.4 млн ₽/год<br>❌ Нельзя нанимать сотрудников<br>❌ Нет вычета НДС</div>
+            </div>
+            <div class="card p-6 rounded-xl border border-emerald-500">
+                <div class="text-2xl font-bold text-center text-emerald-400 mb-2">ИП на УСН 6%</div>
+                <div class="text-sm text-slate-400">Доходы минус взносы</div>
+                <div class="mt-4 text-slate-300">✔️ Самый популярный вариант<br>✔️ Можно нанимать персонал<br>⚠️ Нужно платить страховые взносы (~49 тыс ₽/год)</div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <div class="text-2xl font-bold text-center text-purple-400 mb-2">ООО / УСН</div>
+                <div class="text-sm text-slate-400">15% (доходы-расходы)</div>
+                <div class="mt-4 text-slate-300">✔️ Для крупных оборотов<br>✔️ Вычет входного НДС (если работаете с НДС)<br>❌ Сложнее учёт</div>
+            </div>
         </div>
-        <div class="card p-5 mt-6 text-center">
-            <span class="text-emerald-300 font-bold">Инвестиции в подготовку: ~150 000 ₽</span><br>
-            <span class="text-slate-300">Ожидаемая прибыль с первой полной партии: 6,2 млн ₽</span>
+        <div class="mt-6 card p-4 rounded-xl highlight">
+            <p class="text-center">Для вашей партии (прибыль ~1.7 млн ₽) оптимально — ИП на УСН 6%.</p>
         </div>
     </div>
 </div>
 
-<!-- слайд 9: выводы и рекомендации -->
+<!-- Slide 9: План действий на WB -->
 <div class="slide" id="slide-9">
-    <div class="max-w-6xl mx-auto text-center">
-        <div class="text-6xl mb-4">✅</div>
-        <h2 class="text-4xl md:text-5xl font-bold mb-5">Проект готов к запуску</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-6 text-left">
-                <div class="font-bold text-lg mb-2">Ключевые выводы</div>
-                <ul class="list-disc list-inside space-y-1 text-slate-300">
-                    <li>ROI 119% при рознице 700 ₽</li>
-                    <li>Лучший ROI у бюджетного сегмента — 165%</li>
-                    <li>Окупаемость 2–3 месяца</li>
-                    <li>Риски управляемы (маркировка, сертификация)</li>
-                </ul>
-            </div>
-            <div class="card p-6 text-left">
-                <div class="font-bold text-lg mb-2">Рекомендации</div>
-                <ul class="list-disc list-inside space-y-1 text-slate-300">
-                    <li>Начать с тестовой партии 5–10 артикулов</li>
-                    <li>Фокус на бюджетный кластер (11–13¥)</li>
-                    <li>Автоматизировать контроль остатков и штрафов</li>
-                    <li>Инвестировать в качественные фото (+20–30% конверсии)</li>
-                </ul>
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-blue-400 uppercase tracking-widest mb-4">Пошаговый план</div>
+        <h2 class="text-5xl font-bold mb-8">Как начать продавать на Wildberries</h2>
+        <div class="relative">
+            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-slate-700"></div>
+            <div class="space-y-6">
+                <div class="flex gap-6 items-start">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center font-bold text-xl z-10">1</div>
+                    <div class="card p-4 rounded-xl flex-1">Регистрация на портале seller.wildberries.ru (ИНН, расчётный счёт)</div>
+                </div>
+                <div class="flex gap-6 items-start">
+                    <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center font-bold text-xl z-10">2</div>
+                    <div class="card p-4 rounded-xl flex-1">Загрузка карточек товара (фото, описание, размеры, цена 650 ₽)</div>
+                </div>
+                <div class="flex gap-6 items-start">
+                    <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center font-bold text-xl z-10">3</div>
+                    <div class="card p-4 rounded-xl flex-1">Поставка товара на склад WB (FBO) — лучший вариант для старта</div>
+                </div>
+                <div class="flex gap-6 items-start">
+                    <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center font-bold text-xl z-10">4</div>
+                    <div class="card p-4 rounded-xl flex-1">Настройка рекламы (автостратегия) — бюджет 5-10% от выручки</div>
+                </div>
+                <div class="flex gap-6 items-start">
+                    <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center font-bold text-xl z-10">5</div>
+                    <div class="card p-4 rounded-xl flex-1">Анализ продаж, корректировка цены, работа с отзывами</div>
+                </div>
             </div>
         </div>
-        <div class="mt-6 text-slate-400 text-sm">Контрольные метрики: конверсия 3–5% | возврат <8% | рейтинг >4,5 | проблемные товары <5%</div>
+    </div>
+</div>
+
+<!-- Slide 10: График денежного потока -->
+<div class="slide" id="slide-10">
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-emerald-400 uppercase tracking-widest mb-4">Денежный поток</div>
+        <h2 class="text-5xl font-bold mb-8">Когда вернутся инвестиции?</h2>
+        <div class="card p-6 rounded-xl">
+            <canvas id="cashflowChart" height="200"></canvas>
+        </div>
+        <div class="grid grid-cols-2 gap-8 mt-6">
+            <div class="card p-4 rounded-xl">
+                <div class="text-slate-400">Инвестиции в закупку</div>
+                <div class="text-2xl font-bold text-red-400">−1 772 690 ₽</div>
+            </div>
+            <div class="card p-4 rounded-xl">
+                <div class="text-slate-400">Среднемесячная выручка (при продаже 3000 шт/мес)</div>
+                <div class="text-2xl font-bold text-emerald-400">+1 950 000 ₽</div>
+            </div>
+        </div>
+        <div class="mt-4 text-center text-slate-400">Точка безубыточности (окупаемость) — ~3,5 месяца при равномерных продажах</div>
+    </div>
+</div>
+
+<!-- Slide 11: Итоговая рекомендация -->
+<div class="slide" id="slide-11">
+    <div class="max-w-6xl mx-auto w-full animate-in">
+        <div class="text-sm text-purple-400 uppercase tracking-widest mb-4">Резюме</div>
+        <h2 class="text-5xl font-bold mb-8">Что в итоге?</h2>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="card p-6 rounded-xl">
+                <ul class="space-y-3 text-lg">
+                    <li class="flex items-center gap-2"><span class="text-emerald-400 text-2xl">✓</span> Реальная прибыль с партии — <strong class="text-emerald-400">1.74 млн ₽</strong></li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-400 text-2xl">✓</span> Рентабельность инвестиций (ROI) — <strong>98%</strong></li>
+                    <li class="flex items-center gap-2"><span class="text-emerald-400 text-2xl">✓</span> Окупаемость за <strong>3–4 месяца</strong></li>
+                    <li class="flex items-center gap-2"><span class="text-yellow-400 text-2xl">⚠</span> Основные риски: возвраты, конкуренция, логистика</li>
+                </ul>
+            </div>
+            <div class="card p-6 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex flex-col justify-center">
+                <div class="text-center">
+                    <div class="text-4xl font-bold gradient-text">Оптимальная цена</div>
+                    <div class="text-6xl font-bold my-4">650 ₽</div>
+                    <div class="text-slate-400">Обеспечивает баланс спроса и максимальной прибыли</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Финальный слайд -->
+<div class="slide" id="slide-12">
+    <div class="max-w-4xl mx-auto w-full text-center animate-in">
+        <div class="text-7xl mb-6">📈</div>
+        <h2 class="text-5xl font-bold mb-6">Готовый бизнес-план</h2>
+        <div class="card p-8 rounded-xl mb-8 text-left">
+            <p class="text-xl text-slate-300 leading-relaxed">
+                Ваш заказ на 10 440 бюстгальтеров при себестоимости 170 ₽ — отличная база для старта на Wildberries.
+                При розничной цене 650 ₽ и средних расходах (комиссия, логистика, налоги, возвраты) вы получаете чистую прибыль
+                <span class="text-emerald-400 font-bold">~1 740 000 ₽</span> с партии.
+            </p>
+            <div class="grid grid-cols-2 gap-6 mt-6 text-center">
+                <div>
+                    <div class="text-3xl font-bold metric text-emerald-400">3.5 мес</div>
+                    <div class="text-slate-500">Окупаемость</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold metric text-purple-400">98%</div>
+                    <div class="text-slate-500">ROI</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-2xl text-slate-400 font-light">
+            Запускайтесь, тестируйте цену и масштабируйте!
+        </div>
     </div>
 </div>
 
 <script>
-let current = 1;
-const total = 9;
+let currentSlide = 1;
+const totalSlides = 12;
 
 function showSlide(n) {
-    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    const target = document.getElementById(`slide-${n}`);
-    if (target) {
-        target.classList.add('active');
-        document.getElementById('slide-counter').innerText = `${n} / ${total}`;
-        if (n === 3) setTimeout(initPriceChart, 100);
-        if (n === 4) setTimeout(initRoiCluster, 100);
-        if (n === 6) setTimeout(initProfitTotal, 100);
-    }
+    document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+    document.getElementById(`slide-${n}`).classList.add('active');
+    document.getElementById('slide-counter').textContent = `${n} / ${totalSlides}`;
+    if (n === 4) initBreakevenChart();
+    if (n === 6) initPriceProfitChart();
+    if (n === 7) initReturnsChart();
+    if (n === 10) initCashflowChart();
 }
-function nextSlide() { if (current < total) { current++; showSlide(current); } }
-function prevSlide() { if (current > 1) { current--; showSlide(current); } }
 
-document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); });
-let touchStart = 0;
-document.addEventListener('touchstart', e => { touchStart = e.changedTouches[0].screenX; });
-document.addEventListener('touchend', e => {
-    const diff = touchStart - e.changedTouches[0].screenX;
-    if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
-});
+function nextSlide() { if (currentSlide < totalSlides) { currentSlide++; showSlide(currentSlide); } }
+function prevSlide() { if (currentSlide > 1) { currentSlide--; showSlide(currentSlide); } }
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); });
 
-function initPriceChart() {
-    const ctx = document.getElementById('priceHistogram');
-    if (!ctx) return;
-    if (ctx.chart) ctx.chart.destroy();
+function initBreakevenChart() {
+    const ctx = document.getElementById('breakevenChart');
+    if (!ctx || ctx.chart) return;
     ctx.chart = new Chart(ctx, {
         type: 'bar',
-        data: {
-            labels: ['11-13¥', '13-16¥', '16-19¥', '19-23¥'],
-            datasets: [{ label: 'Количество артикулов', data: [14, 13, 15, 27], backgroundColor: '#3b82f6', borderRadius: 8 }]
-        },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
+        data: { labels: ['Себест.', 'Комиссия', 'Логистика', 'Налог', 'Хран.+возвр.'], datasets: [{ label: '₽ на единицу', data: [170, 117, 100, 39, 57], backgroundColor: '#3b82f6', borderRadius: 8 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, x: { ticks: { color: '#cbd5e1' } } } }
     });
 }
-function initRoiCluster() {
-    const ctx = document.getElementById('roiClusterChart');
-    if (!ctx) return;
-    if (ctx.chart) ctx.chart.destroy();
+function initPriceProfitChart() {
+    const ctx = document.getElementById('priceProfitChart');
+    if (!ctx || ctx.chart) return;
     ctx.chart = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: ['Бюджетный', 'Средний', 'Дорогой', 'Премиум'], datasets: [{ label: 'ROI %', data: [165, 140, 125, 110], backgroundColor: '#10b981', borderRadius: 8 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
+        type: 'line', data: { labels: ['500 ₽', '550 ₽', '600 ₽', '650 ₽', '700 ₽', '750 ₽'], datasets: [{ label: 'Прибыль с 1 шт (₽)', data: [32, 92, 129, 167, 204, 242], borderColor: '#10b981', tension: 0.3, fill: false, pointRadius: 6, pointBackgroundColor: '#10b981' }] },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }, x: { ticks: { color: '#cbd5e1' } } } }
     });
 }
-function initProfitTotal() {
-    const ctx = document.getElementById('profitTotalChart');
-    if (!ctx) return;
-    if (ctx.chart) ctx.chart.destroy();
+function initReturnsChart() {
+    const ctx = document.getElementById('returnsChart');
+    if (!ctx || ctx.chart) return;
     ctx.chart = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: ['Модель текущая', 'Новая модель (700₽)'], datasets: [{ label: 'Чистая прибыль (млн ₽)', data: [2.9, 6.2], backgroundColor: ['#475569', '#10b981'], borderRadius: 10 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
+        type: 'bar', data: { labels: ['5% возвратов', '8% возвратов', '15% возвратов'], datasets: [{ label: 'Чистая прибыль (млн ₽)', data: [1.86, 1.74, 1.46], backgroundColor: ['#34d399', '#fbbf24', '#ef4444'], borderRadius: 8 }] },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { ticks: { color: '#94a3b8', callback: (v) => v + 'M' }, grid: { color: '#334155' } }, x: { ticks: { color: '#cbd5e1' } } } }
+    });
+}
+function initCashflowChart() {
+    const ctx = document.getElementById('cashflowChart');
+    if (!ctx || ctx.chart) return;
+    ctx.chart = new Chart(ctx, {
+        type: 'line', data: { labels: ['Месяц 1', 'Месяц 2', 'Месяц 3', 'Месяц 4', 'Месяц 5'], datasets: [{ label: 'Накопленная прибыль (тыс. ₽)', data: [-1772, -800, 200, 1200, 2100], borderColor: '#60a5fa', fill: true, backgroundColor: 'rgba(96,165,250,0.1)', tension: 0.3 }] },
+        options: { responsive: true, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.raw.toFixed(0)} тыс. ₽` } } }, scales: { y: { ticks: { color: '#94a3b8', callback: (v) => v + 'k' }, grid: { color: '#334155' } }, x: { ticks: { color: '#cbd5e1' } } } }
     });
 }
 showSlide(1);
