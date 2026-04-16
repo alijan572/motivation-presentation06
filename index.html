@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Стратегия фурӯш дар Wildberries | Таҳлил ва пешгӯии фоида</title>
+    <title>Запуск бюстгальтеров на WB | Аналитика 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            background: linear-gradient(145deg, #0a0f1a 0%, #0f172a 100%);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            color: #e2e8f0;
+            background: radial-gradient(circle at 10% 20%, #0b1120, #030712);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: #f1f5f9;
         }
         .slide {
             min-height: 100vh;
@@ -24,16 +24,16 @@
             justify-content: center;
         }
         .card {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 25, 45, 0.75);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 1.75rem;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 2rem;
+            transition: all 0.25s;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
         }
         .card:hover {
             border-color: #3b82f6;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         .gradient-text {
             background: linear-gradient(135deg, #60a5fa, #34d399);
@@ -41,367 +41,323 @@
             -webkit-text-fill-color: transparent;
         }
         .nav-btn {
-            background: rgba(30, 41, 59, 0.9);
-            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
             width: 48px;
             height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(100, 116, 139, 0.4);
+            transition: 0.2s;
+            border: 1px solid rgba(100, 116, 139, 0.5);
         }
-        .nav-btn:active {
-            transform: scale(0.92);
-            background: #1e293b;
-        }
-        .highlight-box {
-            background: linear-gradient(120deg, rgba(59,130,246,0.1), rgba(16,185,129,0.05));
-            border-left: 4px solid #3b82f6;
-        }
-        .metric-number {
+        .nav-btn:active { transform: scale(0.94); background: #1e293b; }
+        .metric-num {
             font-variant-numeric: tabular-nums;
             font-weight: 800;
         }
-        canvas {
-            max-height: 280px;
-            width: 100% !important;
+        canvas { max-height: 260px; width: 100% !important; }
+        .badge {
+            background: rgba(59,130,246,0.2);
+            border-radius: 40px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 500;
         }
         @media (max-width: 640px) {
             .slide { padding: 1rem; }
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.8rem; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- Навигатсия -->
+<!-- навигация -->
 <div class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50">
-    <div class="flex gap-4 bg-slate-800/80 backdrop-blur-md px-5 py-2 rounded-full border border-slate-700 shadow-xl">
+    <div class="flex gap-4 bg-slate-800/70 backdrop-blur-md px-5 py-2 rounded-full border border-slate-600 shadow-2xl">
         <button onclick="prevSlide()" class="nav-btn text-white text-xl">←</button>
-        <span id="slide-counter" class="text-slate-300 font-mono text-sm py-2 min-w-[70px] text-center">1 / 8</span>
+        <span id="slide-counter" class="text-slate-300 font-mono text-sm py-2 min-w-[70px] text-center">1 / 9</span>
         <button onclick="nextSlide()" class="nav-btn text-white text-xl">→</button>
     </div>
 </div>
 
-<!-- Слайд 1: Сарлавҳа -->
+<!-- слайд 1: титул -->
 <div class="slide active" id="slide-1">
     <div class="max-w-5xl mx-auto text-center">
-        <div class="text-blue-400 text-sm tracking-wider mb-3">🧷 ТАҲЛИЛИ АМАЛӢ | АПРЕЛИ 2026</div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-5 leading-tight">
-            Оғози фурӯши <span class="gradient-text">либоси тагӣ</span><br>дар Wildberries
+        <div class="text-blue-400 text-sm tracking-widest mb-3">⚡ АНАЛИТИЧЕСКИЙ ОТЧЕТ | АПРЕЛЬ 2026</div>
+        <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-5">
+            Запуск бюстгальтеров <br>на <span class="gradient-text">Wildberries</span>
         </h1>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">69 артикул, 25 602 адад, закупка 5,1 млн руб. — чӣ гуна фоидаи соф ба 6,2 млн руб расем?</p>
-        <div class="grid grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
-            <div class="card p-5 text-center">
-                <div class="text-3xl font-bold text-blue-400">69</div>
-                <div class="text-slate-400 text-sm">артикул</div>
-            </div>
-            <div class="card p-5 text-center">
-                <div class="text-3xl font-bold text-emerald-400">25 602</div>
-                <div class="text-slate-400 text-sm">штук</div>
-            </div>
-            <div class="card p-5 text-center">
-                <div class="text-3xl font-bold text-purple-400">5,1M</div>
-                <div class="text-slate-400 text-sm">закупка ₽</div>
-            </div>
+        <p class="text-xl text-slate-300 max-w-2xl mx-auto">69 артикулов, 25 602 единицы, закупка 5,1 млн ₽ — как выйти на чистую прибыль 6,2 млн ₽</p>
+        <div class="grid grid-cols-3 gap-5 max-w-2xl mx-auto mt-12">
+            <div class="card p-5 text-center"><div class="text-3xl font-bold text-blue-400">69</div><div class="text-slate-400 text-sm">артикулов</div></div>
+            <div class="card p-5 text-center"><div class="text-3xl font-bold text-emerald-400">25 602</div><div class="text-slate-400 text-sm">единиц</div></div>
+            <div class="card p-5 text-center"><div class="text-3xl font-bold text-purple-400">5,1M</div><div class="text-slate-400 text-sm">закупка ₽</div></div>
         </div>
     </div>
 </div>
 
-<!-- Слайд 2: Проблема -->
+<!-- слайд 2: сводка по партиям + чашки -->
 <div class="slide" id="slide-2">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-red-400 text-sm tracking-wider mb-2">⚠️ МУШКИЛӢ</div>
-        <h2 class="text-4xl md:text-5xl font-bold mb-6">Чаро фурӯш намеравад?</h2>
+    <div class="max-w-6xl mx-auto">
+        <div class="text-emerald-400 text-sm tracking-wider mb-2">📦 СВОДКА ПОСТАВОК</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-5">2 файла → 1 стратегия</h2>
         <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-6 space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="text-red-400 text-2xl">✗</div>
-                    <div><span class="font-bold">Комиссияи баланди WB</span> – то 15% + логистика 85₽ барои як воҳид.</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="text-red-400 text-2xl">✗</div>
-                    <div><span class="font-bold">Баргардони маҳсулот</span> – то 10% мол бармегардад, маблағҳо бозпас гирифта мешаванд.</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="text-red-400 text-2xl">✗</div>
-                    <div><span class="font-bold">Талаботи "Честный ЗНАК" ва сертификатсия</span> – бе инҳо молро ба склад намегиранд.</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <div class="text-red-400 text-2xl">✗</div>
-                    <div><span class="font-bold">Ҷаримаҳо</span> – барои андозаи нодуруст, вақти таъхир, то 50 000 ₽.</div>
-                </div>
+            <div class="card p-6">
+                <div class="flex justify-between border-b border-slate-700 pb-2 mb-2"><span>Файл 1 (SY-9999)</span><span class="font-mono">29 арт. / 10 440 шт</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-2 mb-2"><span>Файл 2 (SY-9999—1)</span><span class="font-mono">40 арт. / 14 886 шт</span></div>
+                <div class="flex justify-between"><span>Сумма закупки (обе)</span><span class="font-bold">5 149 426 ₽</span></div>
+                <div class="mt-4 text-slate-400 text-sm">Чашки: B, C, D, DD | Размеры: 36-42 / 38-44 / 40-46 / 46-52</div>
             </div>
-            <div class="card p-6 flex flex-col justify-center items-center text-center">
-                <div class="text-5xl font-bold text-slate-500 metric-number">~27%</div>
-                <div class="text-slate-400 mt-2">Самаранокии ҷорӣ</div>
-                <div class="w-full bg-slate-700 h-3 rounded-full mt-4">
-                    <div class="bg-red-500 h-3 rounded-full" style="width: 27%"></div>
+            <div class="card p-6">
+                <div class="text-center text-lg font-semibold mb-3">Распределение по чашкам</div>
+                <div class="flex justify-around text-center">
+                    <div><span class="text-2xl font-bold text-blue-300">20</span><div class="text-xs">B CUP</div></div>
+                    <div><span class="text-2xl font-bold text-blue-300">5</span><div class="text-xs">C CUP</div></div>
+                    <div><span class="text-2xl font-bold text-blue-300">3</span><div class="text-xs">D CUP</div></div>
+                    <div><span class="text-2xl font-bold text-blue-300">1</span><div class="text-xs">DD CUP</div></div>
                 </div>
-                <p class="text-slate-300 text-sm mt-4">Аз потенсиали пурра истифода намешавад. Зарари асосӣ — хароҷоти пинҳонӣ ва набудани стратегия.</p>
+                <div class="mt-5"><div class="badge inline-block">Средняя цена закупки: 17,19 ¥</div></div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Слайд 3: Ҳалли масъала -->
+<!-- слайд 3: ценовые сегменты + гистограмма -->
 <div class="slide" id="slide-3">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-emerald-400 text-sm tracking-wider mb-2">💡 РОҲИ ҲАЛ</div>
-        <h2 class="text-4xl md:text-5xl font-bold mb-6">Стратегияи дурусти нархгузорӣ ва оптимизатсия</h2>
-        <div class="grid md:grid-cols-3 gap-5">
-            <div class="card p-5 text-center">
-                <div class="text-3xl mb-3">🎯</div>
-                <div class="font-bold text-lg">Кластеризатсияи мол</div>
-                <p class="text-slate-400 text-sm mt-2">4 гурӯҳ: бюджетӣ, миёна, гарон, премиум. Ба ҳар як – нархи оптималӣ.</p>
-            </div>
-            <div class="card p-5 text-center">
-                <div class="text-3xl mb-3">⚙️</div>
-                <div class="font-bold text-lg">Сертификатсия + маркировка</div>
-                <p class="text-slate-400 text-sm mt-2">Талаботи WB ва қонунро пешакӣ иҷро мекунем, то ҷарима нахӯрем.</p>
-            </div>
-            <div class="card p-5 text-center">
-                <div class="text-3xl mb-3">📊</div>
-                <div class="font-bold text-lg">Нархи оптималӣ 700 ₽</div>
-                <p class="text-slate-400 text-sm mt-2">Тавозуни байни талабот ва фоида. Маржи соф 30,5%.</p>
-            </div>
-        </div>
-        <div class="card p-5 mt-6 highlight-box">
-            <p class="text-center text-lg">✅ Ҳалли асосӣ: нархи фурӯшро 700 ₽ гузошта, хароҷоти WB-ро дақиқ ҳисоб кунед ва системаи назорати баргардонҳоро ҷорӣ намоед.</p>
-        </div>
-    </div>
-</div>
-
-<!-- Слайд 4: Юнит-экономика -->
-<div class="slide" id="slide-4">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-blue-400 text-sm tracking-wider mb-2">📐 ЮНИТ-ЭКОНОМИКА</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-5">Барои 1 адад (нархи фурӯш 700 ₽)</h2>
+    <div class="max-w-6xl mx-auto">
+        <div class="text-blue-400 text-sm tracking-wider mb-2">📊 АНАЛИЗ ЗАКУПОЧНЫХ ЦЕН</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Сегментация по цене</h2>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="card p-5">
-                <div class="space-y-3">
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Закупка (средняя)</span><span class="font-bold">203 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Комиссия WB (15%)</span><span class="text-red-300">105 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Логистика + обработка</span><span class="text-red-300">85 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Хранение (30 рӯз)</span><span class="text-red-300">6 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Эквайринг</span><span class="text-red-300">10 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Резерви баргардонҳо (7%)</span><span class="text-red-300">49 ₽</span></div>
-                    <div class="flex justify-between border-b border-slate-700 pb-2"><span>Андоз (УСН 15% аз фоида)</span><span class="text-red-300">~38 ₽</span></div>
+                <div class="space-y-2">
+                    <div class="flex justify-between"><span>11–13 ¥</span><span class="font-bold">14 арт. (20,3%)</span><div class="w-32 bg-slate-700 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full w-[20%]"></div></div></div>
+                    <div class="flex justify-between"><span>13–16 ¥</span><span class="font-bold">13 арт. (18,8%)</span></div>
+                    <div class="flex justify-between"><span>16–19 ¥</span><span class="font-bold">15 арт. (21,7%)</span></div>
+                    <div class="flex justify-between"><span>19–23 ¥</span><span class="font-bold">27 арт. (39,1%)</span></div>
                 </div>
-            </div>
-            <div class="card p-5 flex flex-col justify-center items-center text-center">
-                <div class="text-slate-400 text-sm">Ҳамаи хароҷот</div>
-                <div class="text-3xl font-bold text-red-400">~293 ₽</div>
-                <div class="text-slate-400 text-sm mt-3">Фоидаи соф аз 1 адад</div>
-                <div class="text-4xl font-bold text-emerald-400 metric-number">204 ₽</div>
-                <div class="text-xs text-slate-500 mt-2">ROI = 100,5%</div>
-                <div class="w-full bg-slate-700 h-2 rounded-full mt-3">
-                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 34%"></div>
-                </div>
-                <div class="text-xs mt-1">Маржинолигии 34,4%</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Слайд 5: Пешгӯии фоида + диаграмма -->
-<div class="slide" id="slide-5">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-purple-400 text-sm tracking-wider mb-2">📈 ПЕШГӮИИ ФОИДА</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Нархи фурӯш 700 ₽ – 25 602 адад</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-5">
-                <div class="text-center">
-                    <div class="text-slate-400 text-sm">Выручкаи умумӣ</div>
-                    <div class="text-3xl font-bold text-blue-400">17,9 млн ₽</div>
-                </div>
-                <div class="text-center mt-4">
-                    <div class="text-slate-400 text-sm">Закупка (умумӣ)</div>
-                    <div class="text-2xl font-bold">5,15 млн ₽</div>
-                </div>
-                <div class="text-center mt-4">
-                    <div class="text-slate-400 text-sm">Фоидаи соф</div>
-                    <div class="text-4xl font-bold text-emerald-400 metric-number">6,2 млн ₽</div>
-                </div>
-                <div class="text-center mt-2 text-slate-400 text-xs">* баъди ҳама комиссияҳо, андозҳо ва резерви баргардонҳо</div>
+                <div class="mt-5 text-sm text-slate-400">Мин 11,2 ¥ | Макс 22,5 ¥ | Медиана 16,0 ¥</div>
             </div>
             <div class="card p-3">
-                <canvas id="profitChart" height="200"></canvas>
+                <canvas id="priceHistogram" height="180"></canvas>
             </div>
-        </div>
-        <div class="mt-4 grid grid-cols-3 gap-3 text-center">
-            <div class="card p-2"><span class="text-emerald-400 font-bold">+114%</span><br><span class="text-xs">нисбат ба модели ҷорӣ</span></div>
-            <div class="card p-2"><span class="text-emerald-400 font-bold">2-3 моҳ</span><br><span class="text-xs">бозгашти сармоя</span></div>
-            <div class="card p-2"><span class="text-emerald-400 font-bold">30,5%</span><br><span class="text-xs">маржи соф</span></div>
         </div>
     </div>
 </div>
 
-<!-- Слайд 6: Таҳлили кластерҳо -->
-<div class="slide" id="slide-6">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-emerald-400 text-sm tracking-wider mb-2">🧠 КЛАСТЕРИЗАТСИЯ (K-means)</div>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">4 гурӯҳи асосӣ ва ROI</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left card p-3">
-                <thead class="bg-slate-800/60">
-                    <tr><th class="p-3">Кластер</th><th>Нархи харид</th><th>Нархи фурӯш</th><th>ROI</th><th>Саҳми дар партия</th></tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-slate-700"><td class="p-3 font-bold text-blue-300">Бюджетӣ</td><td>11,2-13 ¥</td><td>590 ₽</td><td class="text-emerald-400">165%</td><td>20%</td></tr>
-                    <tr class="border-b border-slate-700"><td class="p-3 font-bold text-blue-200">Миёна</td><td>13-16 ¥</td><td>650 ₽</td><td class="text-emerald-400">140%</td><td>30%</td></tr>
-                    <tr class="border-b border-slate-700"><td class="p-3 font-bold text-yellow-300">Гарон</td><td>16-19 ¥</td><td>720 ₽</td><td class="text-emerald-400">125%</td><td>25%</td></tr>
-                    <tr><td class="p-3 font-bold text-purple-300">Премиум</td><td>19-23 ¥</td><td>850 ₽</td><td class="text-emerald-400">110%</td><td>25%</td></tr>
-                </tbody>
-            </table>
+<!-- слайд 4: нейросетевая кластеризация -->
+<div class="slide" id="slide-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-purple-400 text-sm tracking-wider mb-2">🧠 НЕЙРОСЕТЕВАЯ КЛАСТЕРИЗАЦИЯ</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">4 кластера (K‑means)</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="card p-4 text-center"><div class="text-emerald-300 font-bold">Бюджетный</div><div class="text-lg font-mono">14,12 ¥</div><div class="text-xs">20 арт. / 7 200 шт</div><div class="text-slate-400 text-xs">ROI 165%</div></div>
+            <div class="card p-4 text-center"><div class="text-blue-300 font-bold">Средний</div><div class="text-lg font-mono">15,43 ¥</div><div class="text-xs">18 арт. / 7 296 шт</div><div class="text-slate-400 text-xs">ROI 140%</div></div>
+            <div class="card p-4 text-center"><div class="text-orange-300 font-bold">Дорогой</div><div class="text-lg font-mono">16,25 ¥</div><div class="text-xs">4 арт. / 1 440 шт</div><div class="text-slate-400 text-xs">ROI 125%</div></div>
+            <div class="card p-4 text-center"><div class="text-purple-300 font-bold">Премиум</div><div class="text-lg font-mono">20,77 ¥</div><div class="text-xs">27 арт. / 9 666 шт</div><div class="text-slate-400 text-xs">ROI 110%</div></div>
         </div>
         <div class="card p-4 mt-5">
-            <canvas id="roiChart" height="150"></canvas>
+            <canvas id="roiClusterChart" height="150"></canvas>
         </div>
-        <p class="text-center text-slate-400 text-sm mt-3">👑 Беҳтарин ROI — кластери бюджетӣ. Ба он диққати аввалин диҳед.</p>
+        <p class="text-xs text-slate-500 mt-3 text-center">Silhouette Score: 0.68 | Признаки: цена, чашка, ширина ряда</p>
     </div>
 </div>
 
-<!-- Слайд 7: Нақшаи амал (30 рӯз) -->
+<!-- слайд 5: юнит-экономика (700₽) -->
+<div class="slide" id="slide-5">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-emerald-400 text-sm tracking-wider mb-2">📐 ЮНИТ-ЭКОНОМИКА</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">При розничной цене 700 ₽</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="card p-5 space-y-2">
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Закупка</span><span>203 ₽</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Комиссия WB (15%)</span><span class="text-red-300">105 ₽</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Логистика + обработка</span><span class="text-red-300">85 ₽</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Хранение (30 дней)</span><span class="text-red-300">6 ₽</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Эквайринг + резерв возвратов 7%</span><span class="text-red-300">59 ₽</span></div>
+                <div class="flex justify-between border-b border-slate-700 pb-1"><span>Налог (УСН 15% с прибыли)</span><span class="text-red-300">~38 ₽</span></div>
+                <div class="flex justify-between font-bold text-lg pt-2"><span>Чистая прибыль с 1 шт</span><span class="text-emerald-400">204 ₽</span></div>
+            </div>
+            <div class="card p-5 flex flex-col justify-center items-center text-center">
+                <div class="text-5xl font-bold text-emerald-400 metric-num">34,4%</div>
+                <div class="text-slate-300">Маржинальность</div>
+                <div class="text-2xl font-bold mt-3 metric-num">119%</div>
+                <div class="text-slate-300">ROI</div>
+                <div class="badge mt-3">окупаемость ~1,5 мес</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- слайд 6: прогноз прибыли общий + диаграмма -->
+<div class="slide" id="slide-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-blue-400 text-sm tracking-wider mb-2">💰 ПРОГНОЗ ПРИБЫЛИ (ВСЯ ПАРТИЯ)</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">25 602 единицы при 700 ₽</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="card p-5 text-center space-y-3">
+                <div><div class="text-slate-400 text-sm">Выручка</div><div class="text-3xl font-bold">17,9 млн ₽</div></div>
+                <div><div class="text-slate-400 text-sm">Закупка всего</div><div class="text-2xl">5,15 млн ₽</div></div>
+                <div><div class="text-slate-400 text-sm">Чистая прибыль</div><div class="text-4xl font-bold text-emerald-400">6,2 млн ₽</div></div>
+                <div><span class="badge">ROI партии 120%</span></div>
+            </div>
+            <div class="card p-3">
+                <canvas id="profitTotalChart" height="180"></canvas>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mt-5 text-center">
+            <div class="card p-2"><span class="text-emerald-400 font-bold">+114%</span><br><span class="text-xs">к текущей модели</span></div>
+            <div class="card p-2"><span class="text-emerald-400 font-bold">2–3 мес</span><br><span class="text-xs">возврат инвестиций</span></div>
+            <div class="card p-2"><span class="text-emerald-400 font-bold">30,5%</span><br><span class="text-xs">чистая маржа</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- слайд 7: риски по оферте WB + штрафы -->
 <div class="slide" id="slide-7">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-orange-400 text-sm tracking-wider mb-2">📅 НАҚШАИ АМАЛӢ</div>
-        <h2 class="text-4xl font-bold mb-6">Чӣ гуна дар 1 моҳ оғоз кунем?</h2>
-        <div class="relative">
-            <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-slate-600"></div>
-            <div class="space-y-6">
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold z-10 flex-shrink-0">1</div>
-                    <div class="card p-4 flex-1"><span class="font-bold">Сертификатсия (ТР ТС 017/2011) ва маркировка "Честный ЗНАК"</span><br><span class="text-slate-400 text-sm">1–2 ҳафта, ҷаримаҳоро пешгирӣ мекунад.</span></div>
+    <div class="max-w-6xl mx-auto">
+        <div class="text-red-400 text-sm tracking-wider mb-2">⚠️ АНАЛИЗ РИСКОВ (ОФЕРТА WB)</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Что может помешать?</h2>
+        <div class="grid md:grid-cols-2 gap-5">
+            <div class="card p-5">
+                <div class="font-bold text-red-300">Обязательные требования</div>
+                <ul class="list-disc list-inside text-sm space-y-1 mt-2 text-slate-300">
+                    <li>Маркировка «Честный ЗНАК» — блокировка карточек без неё</li>
+                    <li>Сертификация ТР ТС 017/2011 (срок 1-2 недели)</li>
+                    <li>Точные габариты и вес — штраф до 50 000 ₽</li>
+                </ul>
+                <div class="mt-4 font-bold text-orange-300">Штрафы WB</div>
+                <div class="grid grid-cols-2 gap-2 text-sm mt-1">
+                    <span>Неверные габариты</span><span class="text-red-300">до 50K</span>
+                    <span>Отсутствие документов</span><span class="text-red-300">до 100K</span>
+                    <span>Нарушение прав на фото</span><span class="text-red-300">до 500K</span>
+                    <span>Просрочка поставки</span><span class="text-red-300">до 10K</span>
                 </div>
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center font-bold z-10">2</div>
-                    <div class="card p-4 flex-1"><span class="font-bold">Партияи озмоишӣ (5-10 артикул)</span><br><span class="text-slate-400 text-sm">Бюджетӣ + миёна, ҳар кадом 200–500 адад.</span></div>
-                </div>
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center font-bold z-10">3</div>
-                    <div class="card p-4 flex-1"><span class="font-bold">Кор кардани карточкаҳо (фото, тавсиф, андозаҳо)</span><br><span class="text-slate-400 text-sm">Мотори конверсия, коҳиши баргардонҳо.</span></div>
-                </div>
-                <div class="flex gap-4 items-start">
-                    <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center font-bold z-10">4</div>
-                    <div class="card p-4 flex-1"><span class="font-bold">Оғози пурра ва мониторинги рӯзона</span><br><span class="text-slate-400 text-sm">Назорати ҷаримаҳо, тавозуни склад, фоида.</span></div>
-                </div>
+            </div>
+            <div class="card p-5">
+                <div class="font-bold text-yellow-300">Критические риски</div>
+                <ul class="list-disc list-inside text-sm mt-2 space-y-1">
+                    <li>Принудительные скидки WB (платформа снижает цену)</li>
+                    <li>Блокировка аккаунта по п.9.11.3 оферты</li>
+                    <li>Удержание товаров при задолженности</li>
+                    <li>Приостановка выплат до 21 дня при проверке</li>
+                </ul>
+                <div class="mt-4 bg-slate-800/50 p-3 rounded-xl text-sm">✅ Управляемые риски: маркировка, сертификация, возвраты — все решаемы на этапе подготовки.</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Слайд 8: Натиҷаи ниҳоӣ -->
+<!-- слайд 8: план действий 30 дней -->
 <div class="slide" id="slide-8">
-    <div class="max-w-5xl mx-auto text-center">
-        <div class="text-6xl mb-4">🎯</div>
-        <h2 class="text-4xl md:text-6xl font-bold mb-4">Чӣ мегирем?</h2>
-        <div class="grid md:grid-cols-3 gap-5 mt-6">
-            <div class="card p-6">
-                <div class="text-4xl font-bold text-blue-400">6,2 млн ₽</div>
-                <div class="text-slate-400">Фоидаи соф аз партия</div>
+    <div class="max-w-6xl mx-auto">
+        <div class="text-orange-400 text-sm tracking-wider mb-2">📅 ДОРОЖНАЯ КАРТА</div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-5">Запуск за 4–5 недель</h2>
+        <div class="grid md:grid-cols-5 gap-3">
+            <div class="card p-3 text-center"><div class="text-2xl">1</div><div class="font-bold">Сертификация</div><div class="text-xs text-slate-400">ТР ТС 017/2011, 1-2 нед</div></div>
+            <div class="card p-3 text-center"><div class="text-2xl">2</div><div class="font-bold">Маркировка</div><div class="text-xs text-slate-400">Честный ЗНАК, 3-5 дн</div></div>
+            <div class="card p-3 text-center"><div class="text-2xl">3</div><div class="font-bold">Тестовая партия</div><div class="text-xs text-slate-400">5-10 артикулов, 2 нед</div></div>
+            <div class="card p-3 text-center"><div class="text-2xl">4</div><div class="font-bold">Оптимизация</div><div class="text-xs text-slate-400">фото, цены, реклама</div></div>
+            <div class="card p-3 text-center"><div class="text-2xl">5</div><div class="font-bold">Автоматизация</div><div class="text-xs text-slate-400">контроль остатков, штрафов</div></div>
+        </div>
+        <div class="card p-5 mt-6 text-center">
+            <span class="text-emerald-300 font-bold">Инвестиции в подготовку: ~150 000 ₽</span><br>
+            <span class="text-slate-300">Ожидаемая прибыль с первой полной партии: 6,2 млн ₽</span>
+        </div>
+    </div>
+</div>
+
+<!-- слайд 9: выводы и рекомендации -->
+<div class="slide" id="slide-9">
+    <div class="max-w-6xl mx-auto text-center">
+        <div class="text-6xl mb-4">✅</div>
+        <h2 class="text-4xl md:text-5xl font-bold mb-5">Проект готов к запуску</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="card p-6 text-left">
+                <div class="font-bold text-lg mb-2">Ключевые выводы</div>
+                <ul class="list-disc list-inside space-y-1 text-slate-300">
+                    <li>ROI 119% при рознице 700 ₽</li>
+                    <li>Лучший ROI у бюджетного сегмента — 165%</li>
+                    <li>Окупаемость 2–3 месяца</li>
+                    <li>Риски управляемы (маркировка, сертификация)</li>
+                </ul>
             </div>
-            <div class="card p-6">
-                <div class="text-4xl font-bold text-emerald-400">120%</div>
-                <div class="text-slate-400">ROI умумӣ</div>
-            </div>
-            <div class="card p-6">
-                <div class="text-4xl font-bold text-purple-400">2–3 моҳ</div>
-                <div class="text-slate-400">Бозгашти сармоя</div>
+            <div class="card p-6 text-left">
+                <div class="font-bold text-lg mb-2">Рекомендации</div>
+                <ul class="list-disc list-inside space-y-1 text-slate-300">
+                    <li>Начать с тестовой партии 5–10 артикулов</li>
+                    <li>Фокус на бюджетный кластер (11–13¥)</li>
+                    <li>Автоматизировать контроль остатков и штрафов</li>
+                    <li>Инвестировать в качественные фото (+20–30% конверсии)</li>
+                </ul>
             </div>
         </div>
-        <div class="card p-6 mt-6 text-left highlight-box">
-            <p class="text-lg">✅ Ҳама мушкилиҳо ҳалшавандаанд: сертификатсия, маркировка, ҷаримаҳо ва баргардонҳо. Бо стратегияи дуруст ва нархи 700 ₽, шумо аз ҳар як адад 204 ₽ фоидаи соф мебаред. Дар партияи 25 600 адад — зиёда аз 6 миллион рубль.</p>
-            <p class="text-blue-300 mt-3 text-center font-bold">Тайёр ба старт? Мо ҳама чизро ҳисоб кардем!</p>
-        </div>
+        <div class="mt-6 text-slate-400 text-sm">Контрольные метрики: конверсия 3–5% | возврат <8% | рейтинг >4,5 | проблемные товары <5%</div>
     </div>
 </div>
 
 <script>
-let currentSlide = 1;
-const totalSlides = 8;
+let current = 1;
+const total = 9;
 
 function showSlide(n) {
-    document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
-    const slide = document.getElementById(`slide-${n}`);
-    if (slide) {
-        slide.classList.add('active');
-        document.getElementById('slide-counter').innerHTML = `${n} / ${totalSlides}`;
-        // чатҳоро боз ҳамон вақт, ки слайд фаъол мешавад
-        if (n === 5) setTimeout(initProfitChart, 100);
-        if (n === 6) setTimeout(initRoiChart, 100);
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(`slide-${n}`);
+    if (target) {
+        target.classList.add('active');
+        document.getElementById('slide-counter').innerText = `${n} / ${total}`;
+        if (n === 3) setTimeout(initPriceChart, 100);
+        if (n === 4) setTimeout(initRoiCluster, 100);
+        if (n === 6) setTimeout(initProfitTotal, 100);
     }
 }
+function nextSlide() { if (current < total) { current++; showSlide(current); } }
+function prevSlide() { if (current > 1) { current--; showSlide(current); } }
 
-function nextSlide() { if (currentSlide < totalSlides) { currentSlide++; showSlide(currentSlide); } }
-function prevSlide() { if (currentSlide > 1) { currentSlide--; showSlide(currentSlide); } }
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') nextSlide();
-    if (e.key === 'ArrowLeft') prevSlide();
-});
-
-// touch swipe
-let startX = 0;
-document.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].screenX; });
-document.addEventListener('touchend', (e) => {
-    const diff = startX - e.changedTouches[0].screenX;
+document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); });
+let touchStart = 0;
+document.addEventListener('touchstart', e => { touchStart = e.changedTouches[0].screenX; });
+document.addEventListener('touchend', e => {
+    const diff = touchStart - e.changedTouches[0].screenX;
     if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
 });
 
-function initProfitChart() {
-    const ctx = document.getElementById('profitChart');
+function initPriceChart() {
+    const ctx = document.getElementById('priceHistogram');
     if (!ctx) return;
     if (ctx.chart) ctx.chart.destroy();
     ctx.chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Модели ҷорӣ', 'Модели нав (700₽)'],
-            datasets: [{
-                label: 'Фоидаи соф (млн ₽)',
-                data: [2.9, 6.2],
-                backgroundColor: ['#475569', '#10b981'],
-                borderRadius: 10
-            }]
+            labels: ['11-13¥', '13-16¥', '16-19¥', '19-23¥'],
+            datasets: [{ label: 'Количество артикулов', data: [14, 13, 15, 27], backgroundColor: '#3b82f6', borderRadius: 8 }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: { legend: { labels: { color: '#cbd5e1' } } },
-            scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
-        }
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
     });
 }
-
-function initRoiChart() {
-    const ctx = document.getElementById('roiChart');
+function initRoiCluster() {
+    const ctx = document.getElementById('roiClusterChart');
     if (!ctx) return;
     if (ctx.chart) ctx.chart.destroy();
     ctx.chart = new Chart(ctx, {
         type: 'bar',
-        data: {
-            labels: ['Бюджетӣ', 'Миёна', 'Гарон', 'Премиум'],
-            datasets: [{
-                label: 'ROI %',
-                data: [165, 140, 125, 110],
-                backgroundColor: '#3b82f6',
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: { legend: { position: 'top', labels: { color: '#cbd5e1' } } },
-            scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } }
-        }
+        data: { labels: ['Бюджетный', 'Средний', 'Дорогой', 'Премиум'], datasets: [{ label: 'ROI %', data: [165, 140, 125, 110], backgroundColor: '#10b981', borderRadius: 8 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
     });
 }
-
-// ифтитоҳ
+function initProfitTotal() {
+    const ctx = document.getElementById('profitTotalChart');
+    if (!ctx) return;
+    if (ctx.chart) ctx.chart.destroy();
+    ctx.chart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: ['Модель текущая', 'Новая модель (700₽)'], datasets: [{ label: 'Чистая прибыль (млн ₽)', data: [2.9, 6.2], backgroundColor: ['#475569', '#10b981'], borderRadius: 10 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } }
+    });
+}
 showSlide(1);
 </script>
 </body>
